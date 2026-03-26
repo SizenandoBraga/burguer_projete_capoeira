@@ -1,0 +1,986 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Projete Capoeira Liberdade | Gestão de Vendas</title>
+  <style>
+    :root {
+      --bg: #07111f;
+      --panel: rgba(7, 17, 31, 0.72);
+      --panel-strong: rgba(10, 24, 43, 0.9);
+      --card: rgba(255, 255, 255, 0.94);
+      --card-soft: rgba(255, 255, 255, 0.82);
+      --text: #0f172a;
+      --muted: #64748b;
+      --line: rgba(148, 163, 184, 0.22);
+      --primary: #f97316;
+      --primary-2: #ea580c;
+      --secondary: #16a34a;
+      --danger: #dc2626;
+      --info: #2563eb;
+      --gold: #f59e0b;
+      --shadow: 0 18px 60px rgba(2, 6, 23, 0.35);
+      --radius-xl: 28px;
+      --radius-lg: 22px;
+      --radius-md: 16px;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: Inter, Arial, Helvetica, sans-serif;
+      color: white;
+      min-height: 100vh;
+      background:
+        linear-gradient(rgba(7, 17, 31, 0.62), rgba(7, 17, 31, 0.88)),
+        url('') center center / cover fixed;
+    }
+
+    .app-shell {
+      max-width: 1500px;
+      margin: 0 auto;
+      padding: 24px;
+    }
+
+    .hero {
+      position: relative;
+      overflow: hidden;
+      border: 1px solid rgba(255,255,255,0.12);
+      border-radius: 32px;
+      background: linear-gradient(135deg, rgba(249,115,22,0.22), rgba(37,99,235,0.18), rgba(22,163,74,0.18));
+      backdrop-filter: blur(12px);
+      box-shadow: var(--shadow);
+      padding: 26px;
+      margin-bottom: 22px;
+    }
+
+    .hero::after {
+      content: '';
+      position: absolute;
+      inset: auto -60px -60px auto;
+      width: 220px;
+      height: 220px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(245,158,11,0.32), transparent 65%);
+      pointer-events: none;
+    }
+
+    .hero-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+      flex-wrap: wrap;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 18px;
+    }
+
+    .logo-box {
+      width: 74px;
+      height: 74px;
+      border-radius: 22px;
+      background: rgba(255,255,255,0.12);
+      border: 1px solid rgba(255,255,255,0.16);
+      backdrop-filter: blur(8px);
+      display: grid;
+      place-items: center;
+      overflow: hidden;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+    }
+
+    .logo-box img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .brand-text h1 {
+      font-size: 32px;
+      line-height: 1.1;
+      margin-bottom: 6px;
+    }
+
+    .brand-text p {
+      color: rgba(255,255,255,0.82);
+      font-size: 15px;
+    }
+
+    .hero-actions {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      border: 0;
+      cursor: pointer;
+      border-radius: 14px;
+      padding: 12px 18px;
+      font-weight: 800;
+      font-size: 14px;
+      transition: transform .18s ease, opacity .18s ease, background .18s ease;
+    }
+
+    .btn:hover { transform: translateY(-1px); }
+    .btn:active { transform: translateY(0); }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--primary), var(--primary-2));
+      color: white;
+      box-shadow: 0 10px 28px rgba(234, 88, 12, 0.28);
+    }
+
+    .btn-secondary {
+      background: rgba(255,255,255,0.12);
+      color: white;
+      border: 1px solid rgba(255,255,255,0.14);
+      backdrop-filter: blur(8px);
+    }
+
+    .btn-danger { background: var(--danger); color: white; }
+    .btn-success { background: var(--secondary); color: white; }
+    .btn-small { padding: 8px 12px; font-size: 12px; border-radius: 12px; }
+
+    .tabs {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-top: 22px;
+    }
+
+    .tab-btn {
+      background: rgba(255,255,255,0.1);
+      color: white;
+      border: 1px solid rgba(255,255,255,0.12);
+      backdrop-filter: blur(8px);
+      border-radius: 999px;
+      padding: 10px 16px;
+      font-weight: 700;
+    }
+
+    .tab-btn.active {
+      background: white;
+      color: #0f172a;
+    }
+
+    .page {
+      display: none;
+      animation: fadeIn .22s ease;
+    }
+
+    .page.active {
+      display: block;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(6px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .glass-card {
+      background: var(--card);
+      color: var(--text);
+      border-radius: var(--radius-xl);
+      box-shadow: var(--shadow);
+      border: 1px solid rgba(255,255,255,0.46);
+    }
+
+    .section {
+      padding: 22px;
+      margin-bottom: 18px;
+    }
+
+    .section-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 18px;
+      flex-wrap: wrap;
+    }
+
+    .section-head h2 {
+      font-size: 22px;
+    }
+
+    .section-head p,
+    .muted {
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+      margin-top: 18px;
+    }
+
+    .stat {
+      background: linear-gradient(180deg, rgba(255,255,255,0.88), rgba(248,250,252,0.94));
+      border: 1px solid var(--line);
+      border-radius: 24px;
+      padding: 18px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .stat::before {
+      content: '';
+      position: absolute;
+      inset: 0 auto auto 0;
+      width: 100%;
+      height: 4px;
+      background: linear-gradient(90deg, var(--primary), var(--info), var(--secondary));
+    }
+
+    .stat-label {
+      color: var(--muted);
+      font-size: 13px;
+      margin-bottom: 8px;
+      font-weight: 700;
+    }
+
+    .stat-value {
+      font-size: 30px;
+      font-weight: 900;
+      letter-spacing: -0.02em;
+    }
+
+    .highlight-revenue { color: var(--info); }
+    .highlight-expense { color: var(--danger); }
+    .highlight-profit { color: var(--secondary); }
+    .highlight-items { color: var(--primary-2); }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(12, 1fr);
+      gap: 18px;
+    }
+
+    .col-4 { grid-column: span 4; }
+    .col-5 { grid-column: span 5; }
+    .col-6 { grid-column: span 6; }
+    .col-7 { grid-column: span 7; }
+    .col-8 { grid-column: span 8; }
+    .col-12 { grid-column: span 12; }
+
+    .inner-card {
+      background: linear-gradient(180deg, rgba(255,255,255,0.98), rgba(248,250,252,0.96));
+      color: var(--text);
+      border-radius: var(--radius-lg);
+      border: 1px solid var(--line);
+      padding: 20px;
+      height: 100%;
+    }
+
+    form {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 14px;
+    }
+
+    .field {
+      display: flex;
+      flex-direction: column;
+      gap: 7px;
+    }
+
+    .field.full {
+      grid-column: 1 / -1;
+    }
+
+    label {
+      font-size: 13px;
+      font-weight: 800;
+      color: #1e293b;
+    }
+
+    input, select, textarea {
+      width: 100%;
+      padding: 13px 14px;
+      border-radius: 14px;
+      border: 1px solid #dbe3ee;
+      background: white;
+      font-size: 15px;
+      outline: none;
+      transition: border-color .18s ease, box-shadow .18s ease;
+    }
+
+    input:focus, select:focus, textarea:focus {
+      border-color: rgba(37,99,235,0.7);
+      box-shadow: 0 0 0 4px rgba(37,99,235,0.12);
+    }
+
+    .table-wrap {
+      overflow-x: auto;
+      border-radius: 18px;
+      border: 1px solid var(--line);
+      background: white;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      min-width: 760px;
+    }
+
+    th, td {
+      padding: 14px 12px;
+      border-bottom: 1px solid #eef2f7;
+      text-align: left;
+      font-size: 14px;
+      vertical-align: middle;
+    }
+
+    th {
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: .06em;
+      color: #475569;
+      background: #f8fafc;
+      font-weight: 900;
+    }
+
+    tbody tr:hover {
+      background: #fafcff;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 7px 11px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 800;
+      border: 1px solid transparent;
+    }
+
+    .badge-hamburguer {
+      background: rgba(249,115,22,0.12);
+      color: #c2410c;
+      border-color: rgba(249,115,22,0.16);
+    }
+
+    .badge-bebida {
+      background: rgba(37,99,235,0.1);
+      color: #1d4ed8;
+      border-color: rgba(37,99,235,0.14);
+    }
+
+    .kpis-mini {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 14px;
+      margin-top: 16px;
+    }
+
+    .kpi-box {
+      background: rgba(255,255,255,0.92);
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      padding: 16px;
+    }
+
+    .kpi-box strong {
+      display: block;
+      font-size: 22px;
+      margin-top: 6px;
+    }
+
+    .placeholder-note {
+      margin-top: 12px;
+      padding: 14px;
+      border-radius: 16px;
+      background: rgba(249,115,22,0.08);
+      color: #9a3412;
+      border: 1px dashed rgba(249,115,22,0.22);
+      font-size: 13px;
+      line-height: 1.5;
+    }
+
+    .logo-upload {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      flex-wrap: wrap;
+      margin-top: 14px;
+    }
+
+    .footer-note {
+      color: rgba(255,255,255,0.74);
+      text-align: center;
+      font-size: 13px;
+      padding: 8px 0 18px;
+    }
+
+    @media (max-width: 1150px) {
+      .stats { grid-template-columns: repeat(2, 1fr); }
+      .col-4, .col-5, .col-6, .col-7, .col-8 { grid-column: span 12; }
+    }
+
+    @media (max-width: 760px) {
+      .app-shell { padding: 14px; }
+      .brand-text h1 { font-size: 24px; }
+      .hero { padding: 18px; border-radius: 24px; }
+      .stats, .kpis-mini, form { grid-template-columns: 1fr; }
+      .section { padding: 16px; }
+      .logo-box { width: 62px; height: 62px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="app-shell">
+    <header class="hero">
+      <div class="hero-top">
+        <div class="brand">
+          <div class="logo-box">
+            <img id="logoPreview" src="https://images.unsplash.com/photo-1544717305-2782549b5136?auto=format&fit=crop&w=300&q=80" alt="Logo do evento" />
+          </div>
+          <div class="brand-text">
+            <h1>Projete Capoeira Liberdade</h1>
+            <p>Painel moderno para gestão de vendas, custos e desempenho do evento.</p>
+          </div>
+        </div>
+
+        <div class="hero-actions">
+          <button class="btn btn-secondary" onclick="exportarDados()">Exportar JSON</button>
+          <button class="btn btn-secondary" onclick="document.getElementById('logoInput').click()">Trocar logo</button>
+          <button class="btn btn-primary" onclick="abrirPagina('vendas')">Ir para vendas</button>
+        </div>
+      </div>
+
+      <div class="tabs">
+        <button class="tab-btn active" data-page="dashboard" onclick="abrirPagina('dashboard')">Dashboard</button>
+        <button class="tab-btn" data-page="vendas" onclick="abrirPagina('vendas')">Vendas</button>
+        <button class="tab-btn" data-page="custos" onclick="abrirPagina('custos')">Custos</button>
+        <button class="tab-btn" data-page="config" onclick="abrirPagina('config')">Configurações</button>
+      </div>
+    </header>
+
+    <main>
+      <section id="dashboard" class="page active glass-card section">
+        <div class="section-head">
+          <div>
+            <h2>Dashboard Financeiro</h2>
+            <p>Visão geral do desempenho do evento em tempo real.</p>
+          </div>
+          <div class="muted">Atualização automática a cada lançamento</div>
+        </div>
+
+        <div class="stats">
+          <div class="stat">
+            <div class="stat-label">Faturamento total</div>
+            <div class="stat-value highlight-revenue" id="faturamento">R$ 0,00</div>
+          </div>
+          <div class="stat">
+            <div class="stat-label">Custos do evento</div>
+            <div class="stat-value highlight-expense" id="custos">R$ 0,00</div>
+          </div>
+          <div class="stat">
+            <div class="stat-label">Lucro estimado</div>
+            <div class="stat-value highlight-profit" id="lucro">R$ 0,00</div>
+          </div>
+          <div class="stat">
+            <div class="stat-label">Itens vendidos</div>
+            <div class="stat-value highlight-items" id="itensVendidos">0</div>
+          </div>
+        </div>
+
+        <div class="grid" style="margin-top: 18px;">
+          <div class="col-7">
+            <div class="inner-card">
+              <div class="section-head">
+                <div>
+                  <h2>Resumo de vendas</h2>
+                  <p class="muted">Últimos lançamentos registrados</p>
+                </div>
+              </div>
+              <div class="table-wrap">
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Produto</th>
+                      <th>Categoria</th>
+                      <th>Qtd</th>
+                      <th>Total</th>
+                    </tr>
+                  </thead>
+                  <tbody id="dashboardVendas"></tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-5">
+            <div class="inner-card">
+              <div class="section-head">
+                <div>
+                  <h2>Indicadores rápidos</h2>
+                  <p class="muted">Leitura executiva do caixa</p>
+                </div>
+              </div>
+              <div class="kpis-mini">
+                <div class="kpi-box">
+                  <span class="muted">Ticket médio</span>
+                  <strong id="ticketMedio">R$ 0,00</strong>
+                </div>
+                <div class="kpi-box">
+                  <span class="muted">Qtd. de vendas</span>
+                  <strong id="qtdVendas">0</strong>
+                </div>
+                <div class="kpi-box">
+                  <span class="muted">Qtd. de custos</span>
+                  <strong id="qtdCustos">0</strong>
+                </div>
+              </div>
+              <div class="placeholder-note">
+                Dica: você pode trocar a imagem de fundo diretamente no CSS e subir a logo oficial do evento na aba <strong>Configurações</strong>.
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="vendas" class="page glass-card section">
+        <div class="section-head">
+          <div>
+            <h2>Gestão de vendas</h2>
+            <p>Cadastre hambúrgueres e bebidas vendidos no evento.</p>
+          </div>
+        </div>
+
+        <div class="grid">
+          <div class="col-5">
+            <div class="inner-card">
+              <h2 style="margin-bottom: 14px;">Registrar venda</h2>
+              <form id="formVenda">
+                <div class="field">
+                  <label for="produto">Produto</label>
+                  <input id="produto" placeholder="Ex.: X-Burger Artesanal" required />
+                </div>
+                <div class="field">
+                  <label for="categoria">Categoria</label>
+                  <select id="categoria">
+                    <option value="Hambúrguer">Hambúrguer</option>
+                    <option value="Bebida">Bebida</option>
+                  </select>
+                </div>
+                <div class="field">
+                  <label for="quantidade">Quantidade</label>
+                  <input id="quantidade" type="number" min="1" value="1" required />
+                </div>
+                <div class="field">
+                  <label for="preco">Preço unitário (R$)</label>
+                  <input id="preco" type="number" min="0" step="0.01" placeholder="0.00" required />
+                </div>
+                <div class="field full">
+                  <button class="btn btn-primary" type="submit">Adicionar venda</button>
+                </div>
+              </form>
+            </div>
+          </div>
+
+          <div class="col-7">
+            <div class="inner-card">
+              <div class="section-head">
+                <div>
+                  <h2>Tabela de vendas</h2>
+                  <p class="muted">Histórico completo de lançamentos</p>
+                </div>
+              </div>
+              <div class="table-wrap">
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Produto</th>
+                      <th>Categoria</th>
+                      <th>Qtd</th>
+                      <th>Preço</th>
+                      <th>Total</th>
+                      <th>Ações</th>
+                    </tr>
+                  </thead>
+                  <tbody id="tabelaVendas"></tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="custos" class="page glass-card section">
+        <div class="section-head">
+          <div>
+            <h2>Custos do evento</h2>
+            <p>Tabela dedicada para acompanhar despesas operacionais.</p>
+          </div>
+        </div>
+
+        <div class="grid">
+          <div class="col-5">
+            <div class="inner-card">
+              <h2 style="margin-bottom: 14px;">Adicionar custo</h2>
+              <form id="formCusto">
+                <div class="field">
+                  <label for="descricaoCusto">Descrição</label>
+                  <input id="descricaoCusto" placeholder="Ex.: Carnes, carvão, gelo, embalagens" required />
+                </div>
+                <div class="field">
+                  <label for="valorCusto">Valor (R$)</label>
+                  <input id="valorCusto" type="number" min="0" step="0.01" placeholder="0.00" required />
+                </div>
+                <div class="field full">
+                  <button class="btn btn-success" type="submit">Adicionar custo</button>
+                </div>
+              </form>
+            </div>
+          </div>
+
+          <div class="col-7">
+            <div class="inner-card">
+              <div class="section-head">
+                <div>
+                  <h2>Tabela de custos do evento</h2>
+                  <p class="muted">Despesas registradas para fechamento do caixa</p>
+                </div>
+              </div>
+              <div class="table-wrap">
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Descrição</th>
+                      <th>Valor</th>
+                      <th>Ações</th>
+                    </tr>
+                  </thead>
+                  <tbody id="tabelaCustos"></tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="config" class="page glass-card section">
+        <div class="section-head">
+          <div>
+            <h2>Configurações visuais</h2>
+            <p>Personalize a identidade visual do painel do evento.</p>
+          </div>
+        </div>
+
+        <div class="grid">
+          <div class="col-6">
+            <div class="inner-card">
+              <h2 style="margin-bottom: 14px;">Logo do evento</h2>
+              <p class="muted">Carregue a logo oficial da Projete Capoeira Liberdade para substituir a imagem atual.</p>
+              <div class="logo-upload">
+                <input id="logoInput" type="file" accept="image/*" />
+                <button class="btn btn-primary" onclick="salvarLogo()" type="button">Aplicar logo</button>
+              </div>
+              <div class="placeholder-note">
+                A logo enviada fica salva no navegador do dispositivo.
+              </div>
+            </div>
+          </div>
+
+          <div class="col-6">
+            <div class="inner-card">
+              <h2 style="margin-bottom: 14px;">Manutenção do sistema</h2>
+              <p class="muted">Use os controles abaixo para exportar ou apagar a base local.</p>
+              <div style="display:flex; gap:12px; flex-wrap:wrap; margin-top:16px;">
+                <button class="btn btn-secondary" onclick="exportarDados()" type="button">Exportar dados</button>
+                <button class="btn btn-danger" onclick="limparTudo()" type="button">Apagar tudo</button>
+              </div>
+              <div class="placeholder-note">
+                Estrutura dividida por páginas: Dashboard, Vendas, Custos e Configurações.
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <div class="footer-note">Sistema de gestão do evento • Projete Capoeira Liberdade</div>
+  </div>
+
+  <script>
+    const STORAGE_KEY = 'projete_capoeira_liberdade_vendas';
+    const STORAGE_LOGO = 'projete_capoeira_liberdade_logo';
+
+    let state = {
+      vendas: [
+        { id: 1, produto: 'X-Burger Artesanal', categoria: 'Hambúrguer', quantidade: 8, preco: 18.00 },
+        { id: 2, produto: 'Refrigerante Lata', categoria: 'Bebida', quantidade: 12, preco: 6.00 },
+        { id: 3, produto: 'Água Mineral', categoria: 'Bebida', quantidade: 7, preco: 4.00 }
+      ],
+      custos: [
+        { id: 1, descricao: 'Compra de carnes', valor: 180.00 },
+        { id: 2, descricao: 'Pães, queijo e molhos', valor: 96.00 },
+        { id: 3, descricao: 'Refrigerantes e gelo', valor: 95.00 }
+      ],
+      logo: ''
+    };
+
+    function salvar() {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+    }
+
+    function carregar() {
+      const raw = localStorage.getItem(STORAGE_KEY);
+      if (raw) {
+        try {
+          state = JSON.parse(raw);
+        } catch (error) {
+          console.error('Erro ao carregar dados:', error);
+        }
+      }
+
+      const logoSalva = localStorage.getItem(STORAGE_LOGO);
+      if (logoSalva) {
+        state.logo = logoSalva;
+      }
+    }
+
+    function moeda(valor) {
+      return Number(valor || 0).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+    }
+
+    function novoId(lista) {
+      return lista.length ? Math.max(...lista.map(item => item.id)) + 1 : 1;
+    }
+
+    function totalFaturamento() {
+      return state.vendas.reduce((soma, item) => soma + (item.quantidade * item.preco), 0);
+    }
+
+    function totalCustos() {
+      return state.custos.reduce((soma, item) => soma + item.valor, 0);
+    }
+
+    function totalItensVendidos() {
+      return state.vendas.reduce((soma, item) => soma + item.quantidade, 0);
+    }
+
+    function ticketMedio() {
+      if (!state.vendas.length) return 0;
+      return totalFaturamento() / state.vendas.length;
+    }
+
+    function atualizarResumo() {
+      const faturamento = totalFaturamento();
+      const custos = totalCustos();
+      const lucro = faturamento - custos;
+
+      document.getElementById('faturamento').textContent = moeda(faturamento);
+      document.getElementById('custos').textContent = moeda(custos);
+      document.getElementById('lucro').textContent = moeda(lucro);
+      document.getElementById('itensVendidos').textContent = totalItensVendidos();
+      document.getElementById('ticketMedio').textContent = moeda(ticketMedio());
+      document.getElementById('qtdVendas').textContent = state.vendas.length;
+      document.getElementById('qtdCustos').textContent = state.custos.length;
+    }
+
+    function renderDashboardVendas() {
+      const tbody = document.getElementById('dashboardVendas');
+      tbody.innerHTML = '';
+
+      const ultimas = [...state.vendas].slice(-5).reverse();
+
+      if (!ultimas.length) {
+        tbody.innerHTML = '<tr><td colspan="4" class="muted">Nenhuma venda registrada.</td></tr>';
+        return;
+      }
+
+      ultimas.forEach(venda => {
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td><strong>${venda.produto}</strong></td>
+          <td><span class="badge ${venda.categoria === 'Bebida' ? 'badge-bebida' : 'badge-hamburguer'}">${venda.categoria}</span></td>
+          <td>${venda.quantidade}</td>
+          <td><strong>${moeda(venda.quantidade * venda.preco)}</strong></td>
+        `;
+        tbody.appendChild(tr);
+      });
+    }
+
+    function renderVendas() {
+      const tbody = document.getElementById('tabelaVendas');
+      tbody.innerHTML = '';
+
+      if (!state.vendas.length) {
+        tbody.innerHTML = '<tr><td colspan="6" class="muted">Nenhuma venda registrada.</td></tr>';
+        return;
+      }
+
+      state.vendas.forEach(venda => {
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td><strong>${venda.produto}</strong></td>
+          <td><span class="badge ${venda.categoria === 'Bebida' ? 'badge-bebida' : 'badge-hamburguer'}">${venda.categoria}</span></td>
+          <td>${venda.quantidade}</td>
+          <td>${moeda(venda.preco)}</td>
+          <td><strong>${moeda(venda.quantidade * venda.preco)}</strong></td>
+          <td><button class="btn btn-danger btn-small" onclick="removerVenda(${venda.id})">Excluir</button></td>
+        `;
+        tbody.appendChild(tr);
+      });
+    }
+
+    function renderCustos() {
+      const tbody = document.getElementById('tabelaCustos');
+      tbody.innerHTML = '';
+
+      if (!state.custos.length) {
+        tbody.innerHTML = '<tr><td colspan="3" class="muted">Nenhum custo registrado.</td></tr>';
+        return;
+      }
+
+      state.custos.forEach(custo => {
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td><strong>${custo.descricao}</strong></td>
+          <td>${moeda(custo.valor)}</td>
+          <td><button class="btn btn-danger btn-small" onclick="removerCusto(${custo.id})">Excluir</button></td>
+        `;
+        tbody.appendChild(tr);
+      });
+    }
+
+    function aplicarLogo() {
+      const preview = document.getElementById('logoPreview');
+      if (state.logo) {
+        preview.src = state.logo;
+      }
+    }
+
+    function atualizarTela() {
+      atualizarResumo();
+      renderDashboardVendas();
+      renderVendas();
+      renderCustos();
+      aplicarLogo();
+      salvar();
+    }
+
+    function abrirPagina(nome) {
+      document.querySelectorAll('.page').forEach(page => page.classList.remove('active'));
+      document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+
+      document.getElementById(nome).classList.add('active');
+      document.querySelector(`.tab-btn[data-page="${nome}"]`).classList.add('active');
+    }
+
+    document.getElementById('formVenda').addEventListener('submit', function(e) {
+      e.preventDefault();
+
+      const produto = document.getElementById('produto').value.trim();
+      const categoria = document.getElementById('categoria').value;
+      const quantidade = Number(document.getElementById('quantidade').value);
+      const preco = Number(document.getElementById('preco').value);
+
+      if (!produto || quantidade <= 0 || preco < 0) return;
+
+      state.vendas.push({
+        id: novoId(state.vendas),
+        produto,
+        categoria,
+        quantidade,
+        preco
+      });
+
+      this.reset();
+      document.getElementById('quantidade').value = 1;
+      document.getElementById('categoria').value = 'Hambúrguer';
+      atualizarTela();
+      abrirPagina('vendas');
+    });
+
+    document.getElementById('formCusto').addEventListener('submit', function(e) {
+      e.preventDefault();
+
+      const descricao = document.getElementById('descricaoCusto').value.trim();
+      const valor = Number(document.getElementById('valorCusto').value);
+
+      if (!descricao || valor < 0) return;
+
+      state.custos.push({
+        id: novoId(state.custos),
+        descricao,
+        valor
+      });
+
+      this.reset();
+      atualizarTela();
+      abrirPagina('custos');
+    });
+
+    function removerVenda(id) {
+      state.vendas = state.vendas.filter(item => item.id !== id);
+      atualizarTela();
+    }
+
+    function removerCusto(id) {
+      state.custos = state.custos.filter(item => item.id !== id);
+      atualizarTela();
+    }
+
+    function exportarDados() {
+      const blob = new Blob([JSON.stringify(state, null, 2)], { type: 'application/json' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'projete-capoeira-liberdade-vendas.json';
+      a.click();
+      URL.revokeObjectURL(url);
+    }
+
+    function limparTudo() {
+      const confirmar = confirm('Tem certeza que deseja apagar todas as vendas e custos?');
+      if (!confirmar) return;
+
+      state.vendas = [];
+      state.custos = [];
+      atualizarTela();
+      abrirPagina('dashboard');
+    }
+
+    function salvarLogo() {
+      const input = document.getElementById('logoInput');
+      const file = input.files[0];
+      if (!file) {
+        alert('Selecione uma imagem de logo primeiro.');
+        return;
+      }
+
+      const reader = new FileReader();
+      reader.onload = function(event) {
+        state.logo = event.target.result;
+        localStorage.setItem(STORAGE_LOGO, state.logo);
+        aplicarLogo();
+        salvar();
+        alert('Logo atualizada com sucesso.');
+      };
+      reader.readAsDataURL(file);
+    }
+
+    carregar();
+    atualizarTela();
+  </script>
+</body>
+</html>
