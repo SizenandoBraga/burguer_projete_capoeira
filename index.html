@@ -448,7 +448,10 @@ A próxima venda aparecerá aqui com número do pedido e horário.</div>
         <div class="grid">
           <div class="col-5">
             <div class="card">
-              <div class="section-head"><h2>Registrar venda</h2></div>
+              <div class="section-head">
+                <h2>Registrar venda</h2>
+                <button class="btn btn-secondary btn-small" type="button" onclick="adicionarProdutoRapido()">+ Adicionar produto rápido</button>
+              </div>
               <form id="formVenda">
                 <div class="field">
                   <label for="nomeCliente">Nome da pessoa</label>
@@ -757,6 +760,20 @@ A próxima venda aparecerá aqui com número do pedido e horário.</div>
       document.getElementById(nome).classList.add('active');
       const botao = document.querySelector(`.tab-btn[data-page="${nome}"]`);
       if (botao) botao.classList.add('active');
+    }
+
+    function adicionarProdutoRapido(){
+      const nome = prompt('Nome do produto:');
+      if(!nome) return;
+      const preco = prompt('Preço do produto (R$):');
+      if(preco === null) return;
+      const categoria = prompt('Categoria (Hambúrguer ou Bebida):', 'Hambúrguer');
+
+      document.getElementById('produto').value = nome;
+      document.getElementById('preco').value = Number(preco) || 0;
+      document.getElementById('categoria').value = categoria || 'Hambúrguer';
+
+      alert('Produto preenchido! Agora informe cliente e quantidade.');
     }
 
     document.getElementById('formVenda').addEventListener('submit', function(e) {
