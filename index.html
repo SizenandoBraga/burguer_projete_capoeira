@@ -458,17 +458,16 @@
           </div>
         </div>
 
-        <div class="hero-actions">
-          <div style="position:relative;">
-            <div id="exportMenu" style="display:none; position:absolute; top:56px; right:0; min-width:260px; z-index:30; background:rgba(15,23,42,0.96); border:1px solid rgba(255,255,255,0.12); border-radius:18px; padding:12px; box-shadow:0 20px 50px rgba(0,0,0,0.35);">
-              <div style="font-size:12px; text-transform:uppercase; letter-spacing:.08em; color:rgba(255,255,255,.6); margin-bottom:10px;">Exportar planilhas</div>
-              <div style="display:grid; gap:8px;">
-                <button class="btn btn-secondary" type="button" onclick="exportarPlanilha('vendas')" style="width:100%; text-align:left;">Somente vendas</button>
-                <button class="btn btn-secondary" type="button" onclick="exportarPlanilha('custos')" style="width:100%; text-align:left;">Somente custos</button>
-                <button class="btn btn-primary" type="button" onclick="exportarPlanilha('completa')" style="width:100%; text-align:left;">Vendas + custos</button>
-              </div>
+        <div class="hero-actions" style="position:relative;">
+          <button class="btn btn-secondary" type="button" onclick="toggleExportMenu(event)">Exportar planilhas</button>
+          <div id="exportMenu" style="display:none; position:absolute; top:56px; right:120px; min-width:260px; z-index:30; background:rgba(15,23,42,0.96); border:1px solid rgba(255,255,255,0.12); border-radius:18px; padding:12px; box-shadow:0 20px 50px rgba(0,0,0,0.35);">
+            <div style="font-size:12px; text-transform:uppercase; letter-spacing:.08em; color:rgba(255,255,255,.6); margin-bottom:10px;">Exportar planilhas</div>
+            <div style="display:grid; gap:8px;">
+              <button class="btn btn-secondary" type="button" onclick="exportarPlanilha('vendas')" style="width:100%; text-align:left;">Somente vendas</button>
+              <button class="btn btn-secondary" type="button" onclick="exportarPlanilha('custos')" style="width:100%; text-align:left;">Somente custos</button>
+              <button class="btn btn-primary" type="button" onclick="exportarPlanilha('completa')" style="width:100%; text-align:left;">Vendas + custos</button>
             </div>
-          <button class="btn btn-secondary" onclick="toggleExportMenu()">Exportar planilhas</button>
+          </div>
           <button class="btn btn-secondary" onclick="document.getElementById('logoInput').click()">Trocar logo</button>
           <button class="btn btn-primary" onclick="abrirPagina('vendas')">Ir para vendas</button>
         </div>
@@ -576,6 +575,28 @@
         </div>
 
         <div class="grid">
+          <div class="col-12">
+            <div class="inner-card" style="margin-bottom:18px;">
+              <div class="section-head">
+                <div>
+                  <h2>Custos pré-definidos do evento</h2>
+                  <p class="muted">Edite os valores gastos dos itens mais comuns. Ao salvar, eles entram automaticamente na tabela de custos.</p>
+                </div>
+              </div>
+              <div class="table-wrap">
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Item</th>
+                      <th>Valor gasto (R$)</th>
+                      <th>Ação</th>
+                    </tr>
+                  </thead>
+                  <tbody id="tabelaCustosPadrao"></tbody>
+                </table>
+              </div>
+            </div>
+          </div>
           <div class="col-5">
             <div class="inner-card">
               <h2 style="margin-bottom: 14px;">Registrar venda</h2>
@@ -772,7 +793,19 @@
       ],
       logo: '',
       background: '',
-      whatsNumero: ''
+      whatsNumero: '',
+      custosPadrao: [
+        { id: 101, descricao: 'Carnes', valor: 0 },
+        { id: 102, descricao: 'Pães', valor: 0 },
+        { id: 103, descricao: 'Queijo e complementos', valor: 0 },
+        { id: 104, descricao: 'Molhos', valor: 0 },
+        { id: 105, descricao: 'Refrigerantes', valor: 0 },
+        { id: 106, descricao: 'Água', valor: 0 },
+        { id: 107, descricao: 'Gelo', valor: 0 },
+        { id: 108, descricao: 'Carvão ou gás', valor: 0 },
+        { id: 109, descricao: 'Embalagens', valor: 0 },
+        { id: 110, descricao: 'Copos e guardanapos', valor: 0 }
+      ]
     };
 
     function salvar() {
@@ -912,16 +945,40 @@
       });
     }
 
+    function renderCustosPadrao() {
+      const tbody = document.getElementById('tabelaCustosPadrao');
+      if (!tbody) return;
+      tbody.innerHTML = '';
+
+      state.custosPadrao.forEach(item => {
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td><strong>${item.descricao}</strong></td>
+          <td>
+            <input type="number" min="0" step="0.01" value="${item.valor || 0}" id="custoPadrao_${item.id}" style="max-width:180px;" />
+          </td>
+          <td>
+            <button class="btn btn-success btn-small" onclick="salvarCustoPadrao(${item.id})">Salvar valor</button>
+          </td>
+        `;
+        tbody.appendChild(tr);
+      });
+    }
+
     function aplicarLogo() {
       const preview = document.getElementById('logoPreview');
-      if (state.logo) preview.src = state.logo;
+      if (state.logo) {
+        preview.src = state.logo;
+      } else {
+        preview.src = 'img/Projete-Liberdade_capoeira.png';
+      }
     }
 
     function aplicarBackground() {
       if (state.background) {
         document.body.style.setProperty('--bg-image', `url('${state.background}')`);
       } else {
-        document.body.style.removeProperty('--bg-image');
+        document.body.style.setProperty('--bg-image', "url('img/Projete-Liberdade_capoeira.png')");
       }
     }
 
@@ -930,6 +987,7 @@
       renderDashboardVendas();
       renderVendas();
       renderCustos();
+      renderCustosPadrao();
       aplicarLogo();
       aplicarBackground();
       const whatsInput = document.getElementById('whatsNumero');
@@ -1002,7 +1060,27 @@
       atualizarTela();
     }
 
-    function toggleExportMenu() {
+    function salvarCustoPadrao(id) {
+      const input = document.getElementById(`custoPadrao_${id}`);
+      if (!input) return;
+      const valor = Number(input.value || 0);
+
+      state.custosPadrao = state.custosPadrao.map(item => item.id === id ? { ...item, valor } : item);
+
+      const item = state.custosPadrao.find(c => c.id === id);
+      const existente = state.custos.find(c => c.id === id);
+
+      if (existente) {
+        state.custos = state.custos.map(c => c.id === id ? { ...c, descricao: item.descricao, valor } : c);
+      } else {
+        state.custos.push({ id: item.id, descricao: item.descricao, valor });
+      }
+
+      atualizarTela();
+    }
+
+    function toggleExportMenu(event) {
+      if (event) event.stopPropagation();
       const menu = document.getElementById('exportMenu');
       if (!menu) return;
       menu.style.display = menu.style.display === 'block' ? 'none' : 'block';
@@ -1011,10 +1089,9 @@
     document.addEventListener('click', function(event) {
       const menu = document.getElementById('exportMenu');
       if (!menu) return;
-      const clickedButton = event.target.closest('button');
-      const clickedInsideMenu = event.target.closest('#exportMenu');
-      const isExportTrigger = clickedButton && clickedButton.textContent && clickedButton.textContent.toLowerCase().includes('exportar planilhas');
-      if (!clickedInsideMenu && !isExportTrigger) {
+      const withinMenu = event.target.closest('#exportMenu');
+      const trigger = event.target.closest('[onclick*="toggleExportMenu"]');
+      if (!withinMenu && !trigger) {
         menu.style.display = 'none';
       }
     });
