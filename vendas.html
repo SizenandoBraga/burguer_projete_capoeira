@@ -30,22 +30,22 @@
     }
   </script>
 </head>
-<body class="min-h-screen bg-hero bg-cover bg-center bg-fixed text-white font-sans">
-  <div class="max-w-7xl mx-auto p-6">
-    <header class="mb-5 rounded-[28px] border border-white/15 bg-white/10 p-6 backdrop-blur-md shadow-softxl">
-      <div class="flex flex-wrap items-center justify-between gap-4">
-        <div class="flex items-center gap-4">
-          <div class="h-20 w-20 overflow-hidden rounded-[20px] border border-white/15 bg-white/15">
+<body class="min-h-screen bg-hero bg-cover bg-center bg-fixed text-white font-sans antialiased">
+  <div class="mx-auto max-w-7xl p-3 sm:p-4 lg:p-6">
+    <header class="mb-4 rounded-[22px] border border-white/15 bg-white/10 p-3 backdrop-blur-md shadow-softxl sm:mb-5 sm:rounded-[28px] sm:p-6">
+      <div class="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
+        <div class="flex items-center gap-3 sm:gap-4">
+          <div class="h-14 w-14 overflow-hidden rounded-2xl border border-white/15 bg-white/15 sm:h-20 sm:w-20 sm:rounded-[20px]">
             <img id="logoPreview" src="img/Projete-Liberdade_capoeira.png" alt="Logo do evento" class="h-full w-full object-cover" />
           </div>
           <div>
-            <h1 class="text-3xl font-bold leading-tight">Projete Capoeira Liberdade</h1>
-            <p class="text-sm text-white/85">Página de vendas do evento.</p>
+            <h1 class="text-2xl font-bold leading-tight sm:text-3xl">Projete Capoeira Liberdade</h1>
+            <p class="text-xs text-white/85 sm:text-sm">Página de vendas do evento.</p>
           </div>
         </div>
 
-        <div class="flex flex-wrap items-center gap-3 relative">
-          <button class="inline-flex items-center justify-center rounded-xl border border-white/15 bg-white/10 px-4 py-3 text-sm font-bold text-white transition hover:-translate-y-0.5" type="button" onclick="toggleExportMenu(event)">Exportar planilhas</button>
+        <div class="relative flex flex-col gap-2 sm:flex-row sm:flex-wrap sm:items-center sm:gap-3">
+          <button class="inline-flex min-h-12 items-center justify-center rounded-xl border border-white/15 bg-white/10 px-4 py-3 text-sm font-bold text-white transition hover:-translate-y-0.5" type="button" onclick="toggleExportMenu(event)">Exportar planilhas</button>
           <div id="exportMenu" class="hidden absolute right-0 top-14 z-50 min-w-[260px] rounded-2xl border border-white/15 bg-slate-900/95 p-3 shadow-softxl">
             <div class="mb-3 text-xs font-bold uppercase tracking-[0.18em] text-white/60">Exportar planilhas</div>
             <div class="grid gap-2">
@@ -55,8 +55,8 @@
             </div>
           </div>
 
-          <button class="inline-flex items-center justify-center rounded-xl border border-white/15 bg-white/10 px-4 py-3 text-sm font-bold text-white transition hover:-translate-y-0.5" type="button" onclick="document.getElementById('logoInput').click()">Trocar logo</button>
-          <a href="custos.html" class="inline-flex items-center justify-center rounded-xl border border-white/15 bg-white/10 px-4 py-3 text-sm font-bold text-white transition hover:-translate-y-0.5">Abrir página de custos</a>
+          <button class="inline-flex min-h-12 items-center justify-center rounded-xl border border-white/15 bg-white/10 px-4 py-3 text-sm font-bold text-white transition hover:-translate-y-0.5" type="button" onclick="document.getElementById('logoInput').click()">Trocar logo</button>
+          <a href="custos.html" class="inline-flex min-h-12 items-center justify-center rounded-xl border border-white/15 bg-white/10 px-4 py-3 text-sm font-bold text-white transition hover:-translate-y-0.5">Abrir página de custos</a>
           <a href="index.html" class="inline-flex items-center justify-center rounded-xl bg-gradient-to-r from-brand-orange to-brand-orangeDark px-4 py-3 text-sm font-bold text-white shadow-lg shadow-orange-500/20 transition hover:-translate-y-0.5">Voltar ao dashboard</a>
         </div>
       </div>
