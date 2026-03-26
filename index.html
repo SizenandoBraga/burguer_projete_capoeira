@@ -42,7 +42,7 @@
       min-height: 100vh;
       background:
         linear-gradient(rgba(7, 17, 31, 0.62), rgba(7, 17, 31, 0.88)),
-        url('') center center / cover fixed;
+        var(--bg-image, url('img/Projete-Liberdade_capoeira.png')) center center / cover fixed;
     }
 
     .app-shell {
@@ -169,6 +169,7 @@
       border-radius: 999px;
       padding: 10px 16px;
       font-weight: 700;
+      cursor: pointer;
     }
 
     .tab-btn.active {
@@ -335,7 +336,7 @@
     table {
       width: 100%;
       border-collapse: collapse;
-      min-width: 760px;
+      min-width: 940px;
     }
 
     th, td {
@@ -449,7 +450,7 @@
       <div class="hero-top">
         <div class="brand">
           <div class="logo-box">
-            <img id="logoPreview" src="img/PLC.jpg" alt="Logo do evento" />
+            <img id="logoPreview" src="https://images.unsplash.com/photo-1544717305-2782549b5136?auto=format&fit=crop&w=300&q=80" alt="Logo do evento" />
           </div>
           <div class="brand-text">
             <h1>Projete Capoeira Liberdade</h1>
@@ -514,6 +515,7 @@
                 <table>
                   <thead>
                     <tr>
+                      <th>Cliente</th>
                       <th>Produto</th>
                       <th>Categoria</th>
                       <th>Qtd</th>
@@ -549,7 +551,7 @@
                 </div>
               </div>
               <div class="placeholder-note">
-                Dica: você pode trocar a imagem de fundo diretamente no CSS e subir a logo oficial do evento na aba <strong>Configurações</strong>.
+                Agora o sistema aceita background personalizado, nome do cliente no pedido e envio de ticket por WhatsApp para a churrasqueira.
               </div>
             </div>
           </div>
@@ -569,6 +571,10 @@
             <div class="inner-card">
               <h2 style="margin-bottom: 14px;">Registrar venda</h2>
               <form id="formVenda">
+                <div class="field">
+                  <label for="nomeCliente">Nome da pessoa</label>
+                  <input id="nomeCliente" placeholder="Ex.: João, Maria, Mestre Paulo" required />
+                </div>
                 <div class="field">
                   <label for="produto">Produto</label>
                   <input id="produto" placeholder="Ex.: X-Burger Artesanal" required />
@@ -607,6 +613,7 @@
                 <table>
                   <thead>
                     <tr>
+                      <th>Cliente</th>
                       <th>Produto</th>
                       <th>Categoria</th>
                       <th>Qtd</th>
@@ -680,35 +687,51 @@
         <div class="section-head">
           <div>
             <h2>Configurações visuais</h2>
-            <p>Personalize a identidade visual do painel do evento.</p>
+            <p>Personalize a identidade visual e o fluxo operacional do painel.</p>
           </div>
         </div>
 
         <div class="grid">
           <div class="col-6">
             <div class="inner-card">
-              <h2 style="margin-bottom: 14px;">Logo do evento</h2>
-              <p class="muted">Carregue a logo oficial da Projete Capoeira Liberdade para substituir a imagem atual.</p>
+              <h2 style="margin-bottom: 14px;">Logo e background</h2>
+              <p class="muted">Carregue a logo oficial e uma imagem de background do evento.</p>
               <div class="logo-upload">
                 <input id="logoInput" type="file" accept="image/*" />
+                <input id="bgInput" type="file" accept="image/*" />
                 <button class="btn btn-primary" onclick="salvarLogo()" type="button">Aplicar logo</button>
+                <button class="btn btn-secondary" onclick="salvarBackground()" type="button">Aplicar background</button>
               </div>
               <div class="placeholder-note">
-                A logo enviada fica salva no navegador do dispositivo.
+                A logo e o background enviados ficam salvos no navegador do dispositivo.
               </div>
             </div>
           </div>
 
           <div class="col-6">
             <div class="inner-card">
+              <h2 style="margin-bottom: 14px;">WhatsApp da churrasqueira</h2>
+              <p class="muted">Defina o número que vai receber o ticket do pedido com informação do comprovante.</p>
+              <div class="logo-upload" style="margin-top:16px; align-items:flex-end;">
+                <div style="flex:1; min-width:240px;">
+                  <label for="whatsNumero" style="display:block; margin-bottom:8px;">Número WhatsApp</label>
+                  <input id="whatsNumero" type="text" placeholder="Ex.: 5511999998888" />
+                </div>
+                <button class="btn btn-primary" onclick="salvarNumeroWhatsApp()" type="button">Salvar número</button>
+              </div>
+              <div class="placeholder-note">
+                Use o número com DDI e DDD. Exemplo: 55 + DDD + número. O envio abre o WhatsApp com o ticket pronto para encaminhar.
+              </div>
+            </div>
+          </div>
+
+          <div class="col-12">
+            <div class="inner-card">
               <h2 style="margin-bottom: 14px;">Manutenção do sistema</h2>
               <p class="muted">Use os controles abaixo para exportar ou apagar a base local.</p>
               <div style="display:flex; gap:12px; flex-wrap:wrap; margin-top:16px;">
                 <button class="btn btn-secondary" onclick="exportarDados()" type="button">Exportar dados</button>
                 <button class="btn btn-danger" onclick="limparTudo()" type="button">Apagar tudo</button>
-              </div>
-              <div class="placeholder-note">
-                Estrutura dividida por páginas: Dashboard, Vendas, Custos e Configurações.
               </div>
             </div>
           </div>
@@ -722,19 +745,23 @@
   <script>
     const STORAGE_KEY = 'projete_capoeira_liberdade_vendas';
     const STORAGE_LOGO = 'projete_capoeira_liberdade_logo';
+    const STORAGE_BG = 'projete_capoeira_liberdade_bg';
+    const STORAGE_WHATS = 'projete_capoeira_liberdade_whats';
 
     let state = {
       vendas: [
-        { id: 1, produto: 'X-Burger Artesanal', categoria: 'Hambúrguer', quantidade: 8, preco: 18.00 },
-        { id: 2, produto: 'Refrigerante Lata', categoria: 'Bebida', quantidade: 12, preco: 6.00 },
-        { id: 3, produto: 'Água Mineral', categoria: 'Bebida', quantidade: 7, preco: 4.00 }
+        { id: 1, nomeCliente: 'João', produto: 'X-Burger Artesanal', categoria: 'Hambúrguer', quantidade: 2, preco: 18.00, comprovante: '', comprovanteNome: '' },
+        { id: 2, nomeCliente: 'Maria', produto: 'Refrigerante Lata', categoria: 'Bebida', quantidade: 3, preco: 6.00, comprovante: '', comprovanteNome: '' },
+        { id: 3, nomeCliente: 'Pedro', produto: 'Água Mineral', categoria: 'Bebida', quantidade: 2, preco: 4.00, comprovante: '', comprovanteNome: '' }
       ],
       custos: [
         { id: 1, descricao: 'Compra de carnes', valor: 180.00 },
         { id: 2, descricao: 'Pães, queijo e molhos', valor: 96.00 },
         { id: 3, descricao: 'Refrigerantes e gelo', valor: 95.00 }
       ],
-      logo: ''
+      logo: '',
+      background: '',
+      whatsNumero: ''
     };
 
     function salvar() {
@@ -752,9 +779,13 @@
       }
 
       const logoSalva = localStorage.getItem(STORAGE_LOGO);
-      if (logoSalva) {
-        state.logo = logoSalva;
-      }
+      if (logoSalva) state.logo = logoSalva;
+
+      const bgSalvo = localStorage.getItem(STORAGE_BG);
+      if (bgSalvo) state.background = bgSalvo;
+
+      const whatsSalvo = localStorage.getItem(STORAGE_WHATS);
+      if (whatsSalvo) state.whatsNumero = whatsSalvo;
     }
 
     function moeda(valor) {
@@ -799,17 +830,17 @@
     function renderDashboardVendas() {
       const tbody = document.getElementById('dashboardVendas');
       tbody.innerHTML = '';
-
       const ultimas = [...state.vendas].slice(-5).reverse();
 
       if (!ultimas.length) {
-        tbody.innerHTML = '<tr><td colspan="4" class="muted">Nenhuma venda registrada.</td></tr>';
+        tbody.innerHTML = '<tr><td colspan="5" class="muted">Nenhuma venda registrada.</td></tr>';
         return;
       }
 
       ultimas.forEach(venda => {
         const tr = document.createElement('tr');
         tr.innerHTML = `
+          <td><strong>${venda.nomeCliente || '-'}</strong></td>
           <td><strong>${venda.produto}</strong></td>
           <td><span class="badge ${venda.categoria === 'Bebida' ? 'badge-bebida' : 'badge-hamburguer'}">${venda.categoria}</span></td>
           <td>${venda.quantidade}</td>
@@ -824,19 +855,27 @@
       tbody.innerHTML = '';
 
       if (!state.vendas.length) {
-        tbody.innerHTML = '<tr><td colspan="6" class="muted">Nenhuma venda registrada.</td></tr>';
+        tbody.innerHTML = '<tr><td colspan="7" class="muted">Nenhuma venda registrada.</td></tr>';
         return;
       }
 
       state.vendas.forEach(venda => {
+        const comprovanteInfo = venda.comprovanteNome ? venda.comprovanteNome : 'Sem comprovante';
         const tr = document.createElement('tr');
         tr.innerHTML = `
+          <td><strong>${venda.nomeCliente || '-'}</strong></td>
           <td><strong>${venda.produto}</strong></td>
           <td><span class="badge ${venda.categoria === 'Bebida' ? 'badge-bebida' : 'badge-hamburguer'}">${venda.categoria}</span></td>
           <td>${venda.quantidade}</td>
           <td>${moeda(venda.preco)}</td>
-          <td><strong>${moeda(venda.quantidade * venda.preco)}</strong></td>
-          <td><button class="btn btn-danger btn-small" onclick="removerVenda(${venda.id})">Excluir</button></td>
+          <td><strong>${moeda(venda.quantidade * venda.preco)}</strong><br><span class="muted" style="font-size:12px;">${comprovanteInfo}</span></td>
+          <td>
+            <div style="display:flex; gap:8px; flex-wrap:wrap;">
+              <button class="btn btn-secondary btn-small" onclick="anexarComprovante(${venda.id})">Comprovante</button>
+              <button class="btn btn-success btn-small" onclick="enviarWhatsApp(${venda.id})">WhatsApp</button>
+              <button class="btn btn-danger btn-small" onclick="removerVenda(${venda.id})">Excluir</button>
+            </div>
+          </td>
         `;
         tbody.appendChild(tr);
       });
@@ -864,8 +903,14 @@
 
     function aplicarLogo() {
       const preview = document.getElementById('logoPreview');
-      if (state.logo) {
-        preview.src = state.logo;
+      if (state.logo) preview.src = state.logo;
+    }
+
+    function aplicarBackground() {
+      if (state.background) {
+        document.body.style.setProperty('--bg-image', `url('${state.background}')`);
+      } else {
+        document.body.style.removeProperty('--bg-image');
       }
     }
 
@@ -875,13 +920,15 @@
       renderVendas();
       renderCustos();
       aplicarLogo();
+      aplicarBackground();
+      const whatsInput = document.getElementById('whatsNumero');
+      if (whatsInput) whatsInput.value = state.whatsNumero || '';
       salvar();
     }
 
     function abrirPagina(nome) {
       document.querySelectorAll('.page').forEach(page => page.classList.remove('active'));
       document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
-
       document.getElementById(nome).classList.add('active');
       document.querySelector(`.tab-btn[data-page="${nome}"]`).classList.add('active');
     }
@@ -889,19 +936,23 @@
     document.getElementById('formVenda').addEventListener('submit', function(e) {
       e.preventDefault();
 
+      const nomeCliente = document.getElementById('nomeCliente').value.trim();
       const produto = document.getElementById('produto').value.trim();
       const categoria = document.getElementById('categoria').value;
       const quantidade = Number(document.getElementById('quantidade').value);
       const preco = Number(document.getElementById('preco').value);
 
-      if (!produto || quantidade <= 0 || preco < 0) return;
+      if (!nomeCliente || !produto || quantidade <= 0 || preco < 0) return;
 
       state.vendas.push({
         id: novoId(state.vendas),
+        nomeCliente,
         produto,
         categoria,
         quantidade,
-        preco
+        preco,
+        comprovante: '',
+        comprovanteNome: ''
       });
 
       this.reset();
@@ -950,14 +1001,77 @@
       URL.revokeObjectURL(url);
     }
 
-    function limparTudo() {
-      const confirmar = confirm('Tem certeza que deseja apagar todas as vendas e custos?');
-      if (!confirmar) return;
+    function salvarNumeroWhatsApp() {
+      const numero = (document.getElementById('whatsNumero').value || '').replace(/[^0-9]/g, '');
+      state.whatsNumero = numero;
+      localStorage.setItem(STORAGE_WHATS, numero);
+      salvar();
+      alert('Número do WhatsApp salvo com sucesso.');
+    }
 
-      state.vendas = [];
-      state.custos = [];
-      atualizarTela();
-      abrirPagina('dashboard');
+    function anexarComprovante(id) {
+      const input = document.createElement('input');
+      input.type = 'file';
+      input.accept = 'image/*,.pdf';
+      input.onchange = function() {
+        const file = input.files[0];
+        if (!file) return;
+
+        const reader = new FileReader();
+        reader.onload = function(event) {
+          state.vendas = state.vendas.map(venda => venda.id === id ? { ...venda, comprovante: event.target.result, comprovanteNome: file.name } : venda);
+          atualizarTela();
+          alert('Comprovante anexado ao pedido.');
+        };
+        reader.readAsDataURL(file);
+      };
+      input.click();
+    }
+
+    function enviarWhatsApp(id) {
+      const venda = state.vendas.find(item => item.id === id);
+      if (!venda) return;
+
+      if (!state.whatsNumero) {
+        alert('Cadastre primeiro o número do WhatsApp da churrasqueira na aba Configurações.');
+        abrirPagina('config');
+        return;
+      }
+
+      const comprovanteInfo = venda.comprovanteNome ? `Comprovante anexado: ${venda.comprovanteNome}` : 'Comprovante: pendente de envio manual';
+      const mensagem = [
+        'TICKET DE PEDIDO - PROJETE CAPOEIRA LIBERDADE',
+        `Cliente: ${venda.nomeCliente}`,
+        `Produto: ${venda.produto}`,
+        `Categoria: ${venda.categoria}`,
+        `Quantidade: ${venda.quantidade}`,
+        `Valor unitário: ${moeda(venda.preco)}`,
+        `Total: ${moeda(venda.quantidade * venda.preco)}`,
+        comprovanteInfo,
+        'Liberar preparo do hambúrguer na churrasqueira.'
+      ].join(String.fromCharCode(10));
+
+      const url = `https://wa.me/${state.whatsNumero}?text=${encodeURIComponent(mensagem)}`;
+      window.open(url, '_blank');
+    }
+
+    function salvarBackground() {
+      const input = document.getElementById('bgInput');
+      const file = input.files[0];
+      if (!file) {
+        alert('Selecione uma imagem de background primeiro.');
+        return;
+      }
+
+      const reader = new FileReader();
+      reader.onload = function(event) {
+        state.background = event.target.result;
+        localStorage.setItem(STORAGE_BG, state.background);
+        aplicarBackground();
+        salvar();
+        alert('Background atualizado com sucesso.');
+      };
+      reader.readAsDataURL(file);
     }
 
     function salvarLogo() {
