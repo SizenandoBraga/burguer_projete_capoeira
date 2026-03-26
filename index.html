@@ -42,7 +42,7 @@
       min-height: 100vh;
       background:
         linear-gradient(rgba(7, 17, 31, 0.62), rgba(7, 17, 31, 0.88)),
-        var(--bg-image, url('img/Projete-Liberdade_capoeira.png')) center center / cover fixed;
+        var(--bg-image, url('https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?auto=format&fit=crop&w=1600&q=80')) center center / cover fixed;
     }
 
     .app-shell {
@@ -450,7 +450,7 @@
       <div class="hero-top">
         <div class="brand">
           <div class="logo-box">
-            <img id="logoPreview" src="img/Projete-Liberdade_capoeira.png" alt="Logo do evento" />
+            <img id="logoPreview" src="https://images.unsplash.com/photo-1544717305-2782549b5136?auto=format&fit=crop&w=300&q=80" alt="Logo do evento" />
           </div>
           <div class="brand-text">
             <h1>Projete Capoeira Liberdade</h1>
@@ -459,7 +459,16 @@
         </div>
 
         <div class="hero-actions">
-          <button class="btn btn-secondary" onclick="exportarDados()">Exportar JSON</button>
+          <div style="position:relative;">
+            <div id="exportMenu" style="display:none; position:absolute; top:56px; right:0; min-width:260px; z-index:30; background:rgba(15,23,42,0.96); border:1px solid rgba(255,255,255,0.12); border-radius:18px; padding:12px; box-shadow:0 20px 50px rgba(0,0,0,0.35);">
+              <div style="font-size:12px; text-transform:uppercase; letter-spacing:.08em; color:rgba(255,255,255,.6); margin-bottom:10px;">Exportar planilhas</div>
+              <div style="display:grid; gap:8px;">
+                <button class="btn btn-secondary" type="button" onclick="exportarPlanilha('vendas')" style="width:100%; text-align:left;">Somente vendas</button>
+                <button class="btn btn-secondary" type="button" onclick="exportarPlanilha('custos')" style="width:100%; text-align:left;">Somente custos</button>
+                <button class="btn btn-primary" type="button" onclick="exportarPlanilha('completa')" style="width:100%; text-align:left;">Vendas + custos</button>
+              </div>
+            </div>
+          <button class="btn btn-secondary" onclick="toggleExportMenu()">Exportar planilhas</button>
           <button class="btn btn-secondary" onclick="document.getElementById('logoInput').click()">Trocar logo</button>
           <button class="btn btn-primary" onclick="abrirPagina('vendas')">Ir para vendas</button>
         </div>
@@ -728,9 +737,11 @@
           <div class="col-12">
             <div class="inner-card">
               <h2 style="margin-bottom: 14px;">Manutenção do sistema</h2>
-              <p class="muted">Use os controles abaixo para exportar ou apagar a base local.</p>
+              <p class="muted">Use os controles abaixo para exportar planilhas de vendas, custos ou a planilha completa, além de apagar a base local.</p>
               <div style="display:flex; gap:12px; flex-wrap:wrap; margin-top:16px;">
-                <button class="btn btn-secondary" onclick="exportarDados()" type="button">Exportar dados</button>
+                <button class="btn btn-secondary" onclick="exportarPlanilha('vendas')" type="button">Exportar vendas</button>
+                <button class="btn btn-secondary" onclick="exportarPlanilha('custos')" type="button">Exportar custos</button>
+                <button class="btn btn-primary" onclick="exportarPlanilha('completa')" type="button">Exportar planilha completa</button>
                 <button class="btn btn-danger" onclick="limparTudo()" type="button">Apagar tudo</button>
               </div>
             </div>
@@ -991,14 +1002,143 @@
       atualizarTela();
     }
 
-    function exportarDados() {
-      const blob = new Blob([JSON.stringify(state, null, 2)], { type: 'application/json' });
+    function toggleExportMenu() {
+      const menu = document.getElementById('exportMenu');
+      if (!menu) return;
+      menu.style.display = menu.style.display === 'block' ? 'none' : 'block';
+    }
+
+    document.addEventListener('click', function(event) {
+      const menu = document.getElementById('exportMenu');
+      if (!menu) return;
+      const clickedButton = event.target.closest('button');
+      const clickedInsideMenu = event.target.closest('#exportMenu');
+      const isExportTrigger = clickedButton && clickedButton.textContent && clickedButton.textContent.toLowerCase().includes('exportar planilhas');
+      if (!clickedInsideMenu && !isExportTrigger) {
+        menu.style.display = 'none';
+      }
+    });
+
+    function gerarWorkbookXML(nomeAba, colunas, linhas) {
+      const escapeXml = (valor) => String(valor ?? '')
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&apos;');
+
+      const linhasXml = [];
+      linhasXml.push('<Row>' + colunas.map(coluna => '<Cell><Data ss:Type="String">' + escapeXml(coluna) + '</Data></Cell>').join('') + '</Row>');
+
+      linhas.forEach(linha => {
+        linhasXml.push('<Row>' + linha.map(celula => {
+          const numero = typeof celula === 'number' && Number.isFinite(celula);
+          return '<Cell><Data ss:Type="' + (numero ? 'Number' : 'String') + '">' + escapeXml(celula) + '</Data></Cell>';
+        }).join('') + '</Row>');
+      });
+
+      return '<?xml version="1.0"?>' +
+        '<?mso-application progid="Excel.Sheet"?>' +
+        '<Workbook xmlns="urn:schemas-microsoft-com:office:spreadsheet" ' +
+        'xmlns:o="urn:schemas-microsoft-com:office:office" ' +
+        'xmlns:x="urn:schemas-microsoft-com:office:excel" ' +
+        'xmlns:ss="urn:schemas-microsoft-com:office:spreadsheet" ' +
+        'xmlns:html="http://www.w3.org/TR/REC-html40">' +
+        '<Worksheet ss:Name="' + escapeXml(nomeAba) + '"><Table>' + linhasXml.join('') + '</Table></Worksheet></Workbook>';
+    }
+
+    function gerarWorkbookXMLCompleto() {
+      const escapeXml = (valor) => String(valor ?? '')
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&apos;');
+
+      const montarSheet = (nome, colunas, linhas) => {
+        const header = '<Row>' + colunas.map(coluna => '<Cell><Data ss:Type="String">' + escapeXml(coluna) + '</Data></Cell>').join('') + '</Row>';
+        const body = linhas.map(linha => '<Row>' + linha.map(celula => {
+          const numero = typeof celula === 'number' && Number.isFinite(celula);
+          return '<Cell><Data ss:Type="' + (numero ? 'Number' : 'String') + '">' + escapeXml(celula) + '</Data></Cell>';
+        }).join('') + '</Row>').join('');
+        return '<Worksheet ss:Name="' + escapeXml(nome) + '"><Table>' + header + body + '</Table></Worksheet>';
+      };
+
+      const vendasRows = state.vendas.map(venda => [
+        venda.nomeCliente || '',
+        venda.produto || '',
+        venda.categoria || '',
+        venda.quantidade || 0,
+        venda.preco || 0,
+        (venda.quantidade || 0) * (venda.preco || 0),
+        venda.comprovanteNome || ''
+      ]);
+
+      const custosRows = state.custos.map(custo => [
+        custo.descricao || '',
+        custo.valor || 0
+      ]);
+
+      const resumoRows = [
+        ['Faturamento total', totalFaturamento()],
+        ['Custos do evento', totalCustos()],
+        ['Lucro estimado', totalFaturamento() - totalCustos()],
+        ['Itens vendidos', totalItensVendidos()],
+        ['Quantidade de vendas', state.vendas.length],
+        ['Quantidade de custos', state.custos.length]
+      ];
+
+      return '<?xml version="1.0"?>' +
+        '<?mso-application progid="Excel.Sheet"?>' +
+        '<Workbook xmlns="urn:schemas-microsoft-com:office:spreadsheet" ' +
+        'xmlns:o="urn:schemas-microsoft-com:office:office" ' +
+        'xmlns:x="urn:schemas-microsoft-com:office:excel" ' +
+        'xmlns:ss="urn:schemas-microsoft-com:office:spreadsheet" ' +
+        'xmlns:html="http://www.w3.org/TR/REC-html40">' +
+        montarSheet('Resumo', ['Indicador', 'Valor'], resumoRows) +
+        montarSheet('Vendas', ['Cliente', 'Produto', 'Categoria', 'Quantidade', 'Preco Unitario', 'Total', 'Comprovante'], vendasRows) +
+        montarSheet('Custos', ['Descricao', 'Valor'], custosRows) +
+        '</Workbook>';
+    }
+
+    function baixarArquivo(conteudo, nomeArquivo, tipo) {
+      const blob = new Blob([conteudo], { type: tipo });
       const url = URL.createObjectURL(blob);
       const a = document.createElement('a');
       a.href = url;
-      a.download = 'projete-capoeira-liberdade-vendas.json';
+      a.download = nomeArquivo;
       a.click();
       URL.revokeObjectURL(url);
+    }
+
+    function exportarPlanilha(tipo) {
+      let conteudo = '';
+      let nomeArquivo = '';
+
+      if (tipo === 'vendas') {
+        const linhas = state.vendas.map(venda => [
+          venda.nomeCliente || '',
+          venda.produto || '',
+          venda.categoria || '',
+          venda.quantidade || 0,
+          venda.preco || 0,
+          (venda.quantidade || 0) * (venda.preco || 0),
+          venda.comprovanteNome || ''
+        ]);
+        conteudo = gerarWorkbookXML('Vendas', ['Cliente', 'Produto', 'Categoria', 'Quantidade', 'Preco Unitario', 'Total', 'Comprovante'], linhas);
+        nomeArquivo = 'projete_capoeira_liberdade_vendas.xls';
+      } else if (tipo === 'custos') {
+        const linhas = state.custos.map(custo => [custo.descricao || '', custo.valor || 0]);
+        conteudo = gerarWorkbookXML('Custos', ['Descricao', 'Valor'], linhas);
+        nomeArquivo = 'projete_capoeira_liberdade_custos.xls';
+      } else {
+        conteudo = gerarWorkbookXMLCompleto();
+        nomeArquivo = 'projete_capoeira_liberdade_vendas_custos.xls';
+      }
+
+      baixarArquivo(conteudo, nomeArquivo, 'application/vnd.ms-excel;charset=utf-8;');
+      const menu = document.getElementById('exportMenu');
+      if (menu) menu.style.display = 'none';
     }
 
     function salvarNumeroWhatsApp() {
