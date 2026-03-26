@@ -3,656 +3,211 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Projete Capoeira Liberdade | Gestão de Vendas</title>
-  <style>
-    :root {
-      --primary: #f97316;
-      --primary-dark: #ea580c;
-      --secondary: #16a34a;
-      --danger: #dc2626;
-      --info: #2563eb;
-      --text: #0f172a;
-      --muted: #64748b;
-      --line: rgba(148, 163, 184, 0.22);
-      --white: rgba(255,255,255,0.94);
-      --shadow: 0 18px 60px rgba(2, 6, 23, 0.35);
-      --bg-image: url('img/Projete-Liberdade_capoeira.png');
+  <title>Projete Capoeira Liberdade | Dashboard</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              orange: '#f97316',
+              orangeDark: '#ea580c',
+              green: '#16a34a',
+              red: '#dc2626',
+              blue: '#2563eb',
+              ink: '#0f172a'
+            }
+          },
+          boxShadow: {
+            softxl: '0 18px 60px rgba(2, 6, 23, 0.35)'
+          },
+          backgroundImage: {
+            hero: "linear-gradient(rgba(7, 17, 31, 0.72), rgba(7, 17, 31, 0.90)), url('img/Projete-Liberdade_capoeira.png')"
+          }
+        }
+      }
     }
-
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-
-    body {
-      font-family: Arial, Helvetica, sans-serif;
-      color: white;
-      min-height: 100vh;
-      background:
-        linear-gradient(rgba(7, 17, 31, 0.72), rgba(7, 17, 31, 0.90)),
-        var(--bg-image) center center / cover fixed;
-    }
-
-    .app {
-      max-width: 1450px;
-      margin: 0 auto;
-      padding: 24px;
-    }
-
-    .hero {
-      background: rgba(255,255,255,0.10);
-      border: 1px solid rgba(255,255,255,0.14);
-      backdrop-filter: blur(10px);
-      border-radius: 28px;
-      padding: 24px;
-      box-shadow: var(--shadow);
-      margin-bottom: 20px;
-    }
-
-    .hero-top {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 16px;
-      flex-wrap: wrap;
-    }
-
-    .brand {
-      display: flex;
-      align-items: center;
-      gap: 16px;
-    }
-
-    .logo {
-      width: 78px;
-      height: 78px;
-      border-radius: 20px;
-      background: rgba(255,255,255,0.14);
-      overflow: hidden;
-      border: 1px solid rgba(255,255,255,0.16);
-    }
-
-    .logo img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-    }
-
-    .brand h1 {
-      font-size: 30px;
-      margin-bottom: 6px;
-    }
-
-    .brand p {
-      color: rgba(255,255,255,0.84);
-      font-size: 14px;
-    }
-
-    .hero-actions {
-      display: flex;
-      gap: 10px;
-      align-items: center;
-      flex-wrap: wrap;
-      position: relative;
-    }
-
-    .btn {
-      border: 0;
-      cursor: pointer;
-      border-radius: 14px;
-      padding: 12px 16px;
-      font-weight: 700;
-      font-size: 14px;
-      transition: transform .15s ease, opacity .15s ease;
-    }
-
-    .btn:hover { transform: translateY(-1px); }
-    .btn-primary { background: linear-gradient(135deg, var(--primary), var(--primary-dark)); color: white; }
-    .btn-secondary { background: rgba(255,255,255,0.12); color: white; border: 1px solid rgba(255,255,255,0.12); }
-    .btn-success { background: var(--secondary); color: white; }
-    .btn-danger { background: var(--danger); color: white; }
-    .btn-small { padding: 8px 12px; font-size: 12px; }
-
-    .tabs {
-      display: flex;
-      gap: 10px;
-      flex-wrap: wrap;
-      margin-top: 18px;
-    }
-
-    .tab-btn {
-      border: 1px solid rgba(255,255,255,0.12);
-      background: rgba(255,255,255,0.10);
-      color: white;
-      padding: 10px 16px;
-      border-radius: 999px;
-      cursor: pointer;
-      font-weight: 700;
-    }
-
-    .tab-btn.active { background: white; color: #0f172a; }
-
-    .menu-export {
-      display: none;
-      position: absolute;
-      top: 56px;
-      right: 0;
-      min-width: 260px;
-      z-index: 50;
-      background: rgba(15,23,42,0.96);
-      border: 1px solid rgba(255,255,255,0.12);
-      border-radius: 18px;
-      padding: 12px;
-      box-shadow: 0 20px 50px rgba(0,0,0,0.35);
-    }
-
-    .menu-export.open { display: block; }
-
-    .menu-export-title {
-      font-size: 12px;
-      text-transform: uppercase;
-      letter-spacing: .08em;
-      color: rgba(255,255,255,.6);
-      margin-bottom: 10px;
-    }
-
-    .page { display: none; }
-    .page.active { display: block; }
-
-    .card {
-      background: var(--white);
-      color: var(--text);
-      border-radius: 26px;
-      box-shadow: var(--shadow);
-      padding: 20px;
-      margin-bottom: 18px;
-      border: 1px solid rgba(255,255,255,0.44);
-    }
-
-    .section-head {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 12px;
-      flex-wrap: wrap;
-      margin-bottom: 16px;
-    }
-
-    .section-head h2 { font-size: 22px; }
-    .muted { color: var(--muted); font-size: 14px; }
-
-    .stats {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 16px;
-    }
-
-    .stat {
-      background: linear-gradient(180deg, white, #f8fafc);
-      border: 1px solid var(--line);
-      border-radius: 20px;
-      padding: 18px;
-    }
-
-    .stat-label { color: var(--muted); font-size: 13px; margin-bottom: 8px; font-weight: 700; }
-    .stat-value { font-size: 28px; font-weight: 800; }
-    .saldo-positivo { color: var(--secondary); }
-    .saldo-negativo { color: var(--danger); }
-    .saldo-neutro { color: var(--info); }
-
-    .grid {
-      display: grid;
-      grid-template-columns: repeat(12, 1fr);
-      gap: 18px;
-    }
-
-    .col-5 { grid-column: span 5; }
-    .col-7 { grid-column: span 7; }
-    .col-6 { grid-column: span 6; }
-    .col-12 { grid-column: span 12; }
-
-    form {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 14px;
-    }
-
-    .field {
-      display: flex;
-      flex-direction: column;
-      gap: 7px;
-    }
-
-    .field.full { grid-column: 1 / -1; }
-
-    label {
-      font-size: 13px;
-      font-weight: 700;
-      color: #1e293b;
-    }
-
-    input, select {
-      width: 100%;
-      padding: 13px 14px;
-      border-radius: 14px;
-      border: 1px solid #dbe3ee;
-      background: white;
-      font-size: 15px;
-      outline: none;
-    }
-
-    .table-wrap {
-      overflow-x: auto;
-      border-radius: 18px;
-      border: 1px solid var(--line);
-      background: white;
-    }
-
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      min-width: 980px;
-    }
-
-    th, td {
-      padding: 14px 12px;
-      border-bottom: 1px solid #eef2f7;
-      text-align: left;
-      font-size: 14px;
-      vertical-align: middle;
-    }
-
-    th {
-      font-size: 12px;
-      text-transform: uppercase;
-      letter-spacing: .06em;
-      color: #475569;
-      background: #f8fafc;
-      font-weight: 800;
-    }
-
-    .badge {
-      display: inline-block;
-      padding: 7px 11px;
-      border-radius: 999px;
-      font-size: 12px;
-      font-weight: 700;
-    }
-
-    .badge-hamburguer { background: rgba(249,115,22,0.12); color: #c2410c; }
-    .badge-bebida { background: rgba(37,99,235,0.10); color: #1d4ed8; }
-
-    .kpis-mini {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 14px;
-    }
-
-    .kpi-box {
-      background: white;
-      border: 1px solid var(--line);
-      border-radius: 18px;
-      padding: 16px;
-    }
-
-    .kpi-box strong { display: block; font-size: 22px; margin-top: 6px; }
-
-    .note {
-      margin-top: 12px;
-      padding: 14px;
-      border-radius: 16px;
-      background: rgba(249,115,22,0.08);
-      color: #9a3412;
-      border: 1px dashed rgba(249,115,22,0.22);
-      font-size: 13px;
-      line-height: 1.5;
-    }
-
-    .ticket-preview {
-      margin-top: 14px;
-      background: #fff;
-      color: #111827;
-      border: 1px dashed #cbd5e1;
-      border-radius: 18px;
-      padding: 16px;
-      font-family: 'Courier New', monospace;
-      font-size: 13px;
-      line-height: 1.6;
-      white-space: pre-line;
-    }
-
-    .footer-note {
-      color: rgba(255,255,255,0.74);
-      text-align: center;
-      font-size: 13px;
-      padding: 8px 0 18px;
-    }
-
-    @media (max-width: 1100px) {
-      .stats, .kpis-mini { grid-template-columns: repeat(2, 1fr); }
-      .col-5, .col-6, .col-7 { grid-column: span 12; }
-    }
-
-    @media (max-width: 760px) {
-      .app { padding: 14px; }
-      .brand h1 { font-size: 24px; }
-      .stats, .kpis-mini, form { grid-template-columns: 1fr; }
-      .logo { width: 62px; height: 62px; }
-      .hero { padding: 18px; }
-    }
-  </style>
+  </script>
 </head>
-<body>
-  <div class="app">
-    <header class="hero">
-      <div class="hero-top">
-        <div class="brand">
-          <div class="logo">
-            <img id="logoPreview" src="img/Projete-Liberdade_capoeira.png" alt="Logo do evento" />
+<body class="min-h-screen bg-hero bg-cover bg-center bg-fixed text-white font-sans">
+  <div class="max-w-7xl mx-auto p-6">
+    <header class="mb-5 rounded-[28px] border border-white/15 bg-white/10 p-6 backdrop-blur-md shadow-softxl">
+      <div class="flex flex-wrap items-center justify-between gap-4">
+        <div class="flex items-center gap-4">
+          <div class="h-20 w-20 overflow-hidden rounded-[20px] border border-white/15 bg-white/15">
+            <img src="img/Projete-Liberdade_capoeira.png" alt="Logo do evento" class="h-full w-full object-cover" />
           </div>
           <div>
-            <h1>Projete Capoeira Liberdade</h1>
-            <p>Painel de gestão de vendas, custos e operação do evento.</p>
+            <h1 class="text-3xl font-bold leading-tight">Projete Capoeira Liberdade</h1>
+            <p class="text-sm text-white/85">Dashboard principal do evento.</p>
           </div>
         </div>
 
-        <div class="hero-actions">
-          <button class="btn btn-secondary" type="button" onclick="toggleExportMenu(event)">Exportar planilhas</button>
-          <div id="exportMenu" class="menu-export">
-            <div class="menu-export-title">Exportar planilhas</div>
-            <div style="display:grid; gap:8px;">
-              <button class="btn btn-secondary" type="button" onclick="exportarPlanilha('vendas')" style="width:100%; text-align:left;">Somente vendas</button>
-              <button class="btn btn-secondary" type="button" onclick="exportarPlanilha('custos')" style="width:100%; text-align:left;">Somente custos</button>
-              <button class="btn btn-primary" type="button" onclick="exportarPlanilha('completa')" style="width:100%; text-align:left;">Vendas + custos</button>
-            </div>
-          </div>
-          <button class="btn btn-secondary" type="button" onclick="document.getElementById('logoInput').click()">Trocar logo</button>
-          <button class="btn btn-secondary" type="button" onclick="window.location.href='custos.html'">Abrir página de custos</button>
-          <button class="btn btn-primary" type="button" onclick="abrirPagina('vendas')">Ir para vendas</button>
+        <div class="flex flex-wrap items-center gap-3">
+          <a href="vendas.html" class="inline-flex items-center justify-center rounded-xl bg-gradient-to-r from-brand-orange to-brand-orangeDark px-4 py-3 text-sm font-bold text-white shadow-lg shadow-orange-500/20 transition hover:-translate-y-0.5">Abrir página de vendas</a>
+          <a href="custos.html" class="inline-flex items-center justify-center rounded-xl border border-white/15 bg-white/10 px-4 py-3 text-sm font-bold text-white transition hover:-translate-y-0.5">Abrir página de custos</a>
         </div>
       </div>
 
-      <div class="tabs">
-        <button class="tab-btn active" data-page="dashboard" onclick="abrirPagina('dashboard')">Dashboard</button>
-        <button class="tab-btn" data-page="vendas" onclick="abrirPagina('vendas')">Vendas</button>
-        <button class="tab-btn" type="button" onclick="window.location.href='custos.html'">Custos</button>
-        <button class="tab-btn" data-page="config" onclick="abrirPagina('config')">Configurações</button>
+      <div class="mt-5 flex flex-wrap gap-3">
+        <span class="inline-flex items-center justify-center rounded-full bg-white px-4 py-2 text-sm font-bold text-brand-ink">Dashboard</span>
+        <a href="vendas.html" class="inline-flex items-center justify-center rounded-full border border-white/15 bg-white/10 px-4 py-2 text-sm font-bold text-white transition hover:bg-white/15">Vendas</a>
+        <a href="custos.html" class="inline-flex items-center justify-center rounded-full border border-white/15 bg-white/10 px-4 py-2 text-sm font-bold text-white transition hover:bg-white/15">Custos</a>
       </div>
     </header>
 
     <main>
-      <section id="dashboard" class="page active">
-        <div class="card">
-          <div class="section-head">
+      <section class="mb-5 rounded-[26px] border border-white/40 bg-white/95 p-5 text-brand-ink shadow-softxl">
+        <div class="mb-4 flex flex-wrap items-center justify-between gap-3">
+          <div>
+            <h2 class="text-2xl font-bold">Dashboard financeiro</h2>
+            <p class="text-sm text-slate-500">Visão geral do evento em tempo real.</p>
+          </div>
+        </div>
+
+        <div class="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
+          <div class="rounded-[20px] border border-slate-200 bg-gradient-to-b from-white to-slate-50 p-5">
+            <div class="mb-2 text-xs font-bold uppercase tracking-wide text-slate-500">Faturamento total</div>
+            <div id="faturamento" class="text-3xl font-extrabold text-brand-blue">R$ 0,00</div>
+          </div>
+          <div class="rounded-[20px] border border-slate-200 bg-gradient-to-b from-white to-slate-50 p-5">
+            <div class="mb-2 text-xs font-bold uppercase tracking-wide text-slate-500">Custos do evento</div>
+            <div id="custos" class="text-3xl font-extrabold text-brand-red">R$ 0,00</div>
+          </div>
+          <div class="rounded-[20px] border border-slate-200 bg-gradient-to-b from-white to-slate-50 p-5">
+            <div class="mb-2 text-xs font-bold uppercase tracking-wide text-slate-500">Lucro estimado</div>
+            <div id="lucro" class="text-3xl font-extrabold text-brand-blue">R$ 0,00</div>
+          </div>
+          <div class="rounded-[20px] border border-slate-200 bg-gradient-to-b from-white to-slate-50 p-5">
+            <div class="mb-2 text-xs font-bold uppercase tracking-wide text-slate-500">Itens vendidos</div>
+            <div id="itensVendidos" class="text-3xl font-extrabold text-brand-ink">0</div>
+          </div>
+        </div>
+      </section>
+
+      <div class="grid gap-5 xl:grid-cols-12">
+        <section class="xl:col-span-7 rounded-[26px] border border-white/40 bg-white/95 p-5 text-brand-ink shadow-softxl">
+          <div class="mb-4 flex flex-wrap items-center justify-between gap-3">
             <div>
-              <h2>Dashboard financeiro</h2>
-              <div class="muted">Visão geral do evento em tempo real.</div>
+              <h2 class="text-2xl font-bold">Últimas vendas</h2>
+              <p class="text-sm text-slate-500">Resumo dos lançamentos recentes.</p>
+            </div>
+            <a href="vendas.html" class="rounded-xl bg-gradient-to-r from-brand-orange to-brand-orangeDark px-4 py-2 text-sm font-bold text-white transition hover:-translate-y-0.5">Ir para vendas</a>
+          </div>
+
+          <div class="overflow-x-auto rounded-2xl border border-slate-200 bg-white">
+            <table class="min-w-[880px] w-full border-collapse">
+              <thead>
+                <tr class="bg-slate-50 text-left text-xs font-extrabold uppercase tracking-wider text-slate-600">
+                  <th class="px-4 py-3">Ordem</th>
+                  <th class="px-4 py-3">Horário</th>
+                  <th class="px-4 py-3">Cliente</th>
+                  <th class="px-4 py-3">Produto</th>
+                  <th class="px-4 py-3">Categoria</th>
+                  <th class="px-4 py-3">Qtd</th>
+                  <th class="px-4 py-3">Total</th>
+                </tr>
+              </thead>
+              <tbody id="dashboardVendas">
+                <tr>
+                  <td colspan="7" class="px-4 py-6 text-sm text-slate-500">Nenhuma venda registrada.</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <section class="xl:col-span-5 rounded-[26px] border border-white/40 bg-white/95 p-5 text-brand-ink shadow-softxl">
+          <div class="mb-4 flex flex-wrap items-center justify-between gap-3">
+            <div>
+              <h2 class="text-2xl font-bold">Indicadores</h2>
+              <p class="text-sm text-slate-500">Leitura rápida do caixa.</p>
             </div>
           </div>
 
-          <div class="stats">
-            <div class="stat"><div class="stat-label">Faturamento total</div><div class="stat-value saldo-neutro" id="faturamento">R$ 0,00</div></div>
-            <div class="stat"><div class="stat-label">Custos do evento</div><div class="stat-value saldo-negativo" id="custos">R$ 0,00</div></div>
-            <div class="stat"><div class="stat-label">Lucro estimado</div><div class="stat-value" id="lucro">R$ 0,00</div></div>
-            <div class="stat"><div class="stat-label">Itens vendidos</div><div class="stat-value" id="itensVendidos">0</div></div>
-          </div>
-        </div>
-
-        <div class="grid">
-          <div class="col-7">
-            <div class="card">
-              <div class="section-head">
-                <div>
-                  <h2>Últimas vendas</h2>
-                  <div class="muted">Resumo dos lançamentos recentes.</div>
-                </div>
-              </div>
-              <div class="table-wrap">
-                <table>
-                  <thead>
-                    <tr>
-                      <th>Ordem</th>
-                      <th>Horário</th>
-                      <th>Cliente</th>
-                      <th>Produto</th>
-                      <th>Categoria</th>
-                      <th>Qtd</th>
-                      <th>Total</th>
-                    </tr>
-                  </thead>
-                  <tbody id="dashboardVendas"></tbody>
-                </table>
-              </div>
+          <div class="grid gap-4 sm:grid-cols-2">
+            <div class="rounded-[18px] border border-slate-200 bg-white p-4">
+              <span class="text-sm text-slate-500">Ticket médio</span>
+              <strong id="ticketMedio" class="mt-2 block text-2xl font-extrabold">R$ 0,00</strong>
+            </div>
+            <div class="rounded-[18px] border border-slate-200 bg-white p-4">
+              <span class="text-sm text-slate-500">Qtd. vendas</span>
+              <strong id="qtdVendas" class="mt-2 block text-2xl font-extrabold">0</strong>
+            </div>
+            <div class="rounded-[18px] border border-slate-200 bg-white p-4 sm:col-span-2">
+              <span class="text-sm text-slate-500">Qtd. custos</span>
+              <strong id="qtdCustos" class="mt-2 block text-2xl font-extrabold">0</strong>
             </div>
           </div>
 
-          <div class="col-5">
-            <div class="card">
-              <div class="section-head">
-                <div>
-                  <h2>Indicadores</h2>
-                  <div class="muted">Leitura rápida do caixa.</div>
-                </div>
-              </div>
-              <div class="kpis-mini">
-                <div class="kpi-box"><span class="muted">Ticket médio</span><strong id="ticketMedio">R$ 0,00</strong></div>
-                <div class="kpi-box"><span class="muted">Qtd. vendas</span><strong id="qtdVendas">0</strong></div>
-                <div class="kpi-box"><span class="muted">Qtd. custos</span><strong id="qtdCustos">0</strong></div>
-              </div>
-              <div class="ticket-preview" id="ticketPreview">TICKET PROFISSIONAL
+          <div id="ticketPreview" class="mt-4 rounded-[18px] border border-dashed border-slate-300 bg-white p-4 font-mono text-sm leading-6 whitespace-pre-line text-slate-900">TICKET PROFISSIONAL
 
-A próxima venda aparecerá aqui com número do pedido e horário.</div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <section id="vendas" class="page">
-        <div class="grid">
-          <div class="col-5">
-            <div class="card">
-              <div class="section-head">
-                <h2>Registrar venda</h2>
-                <button class="btn btn-secondary btn-small" type="button" onclick="adicionarProdutoRapido()">+ Adicionar produto rápido</button>
-              </div>
-              <form id="formVenda">
-                <div class="field">
-                  <label for="nomeCliente">Nome da pessoa</label>
-                  <input id="nomeCliente" placeholder="Ex.: João, Maria, Mestre Paulo" required />
-                </div>
-                <div class="field">
-                  <label for="produto">Produto</label>
-                  <input id="produto" placeholder="Ex.: X-Burger Artesanal" required />
-                </div>
-                <div class="field">
-                  <label for="categoria">Categoria</label>
-                  <select id="categoria">
-                    <option value="Hambúrguer">Hambúrguer</option>
-                    <option value="Bebida">Bebida</option>
-                  </select>
-                </div>
-                <div class="field">
-                  <label for="quantidade">Quantidade</label>
-                  <input id="quantidade" type="number" min="1" value="1" required />
-                </div>
-                <div class="field full">
-                  <label for="preco">Preço unitário (R$)</label>
-                  <input id="preco" type="number" min="0" step="0.01" placeholder="0.00" required />
-                </div>
-                <div class="field full" style="display:flex; gap:10px; flex-wrap:wrap;">
-                  <button class="btn btn-secondary" type="button" onclick="adicionarItemCarrinho()">+ Adicionar mais um item</button>
-                  <button class="btn btn-primary" type="submit" style="flex:1; min-width:220px;">Fechar venda</button>
-                </div>
-                <div class="field full">
-                  <div class="ticket-preview" id="carrinhoPreview">Nenhum item no pedido.</div>
-                </div>
-              </form>
-            </div>
-          </div>
-
-          <div class="col-7">
-            <div class="card">
-              <div class="section-head">
-                <div>
-                  <h2>Tabela de vendas</h2>
-                  <div class="muted">Histórico completo.</div>
-                </div>
-              </div>
-              <div class="table-wrap">
-                <table>
-                  <thead>
-                    <tr>
-                      <th>Ordem</th>
-                      <th>Horário</th>
-                      <th>Cliente</th>
-                      <th>Produto</th>
-                      <th>Categoria</th>
-                      <th>Qtd</th>
-                      <th>Preço</th>
-                      <th>Total</th>
-                      <th>Ações</th>
-                    </tr>
-                  </thead>
-                  <tbody id="tabelaVendas"></tbody>
-                </table>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <section id="config" class="page">
-        <div class="grid">
-          <div class="col-6">
-            <div class="card">
-              <div class="section-head"><h2>Logo e background</h2></div>
-              <div class="muted">Imagem padrão: <strong>img/Projete-Liberdade_capoeira.png</strong></div>
-              <div style="display:flex; gap:10px; flex-wrap:wrap; margin-top:14px;">
-                <input id="logoInput" type="file" accept="image/*" />
-                <input id="bgInput" type="file" accept="image/*" />
-                <button class="btn btn-primary" type="button" onclick="salvarLogo()">Aplicar logo</button>
-                <button class="btn btn-secondary" type="button" onclick="salvarBackground()">Aplicar background</button>
-              </div>
-              <div class="note">Se você não enviar nada, a página usa automaticamente o arquivo img/Projete-Liberdade_capoeira.png.</div>
-            </div>
-          </div>
-
-          <div class="col-6">
-            <div class="card">
-              <div class="section-head"><h2>WhatsApp da churrasqueira</h2></div>
-              <div class="field">
-                <label for="whatsNumero">Número do WhatsApp</label>
-                <input id="whatsNumero" type="text" placeholder="Ex.: 5511999998888" />
-              </div>
-              <div style="margin-top:14px;">
-                <button class="btn btn-primary" type="button" onclick="salvarNumeroWhatsApp()">Salvar número</button>
-              </div>
-              <div class="note">O botão de WhatsApp abre a conversa com um ticket profissional do pedido.</div>
-            </div>
-          </div>
-        </div>
-      </section>
+A última venda aparecerá aqui com número do pedido e horário.</div>
+        </section>
+      </div>
     </main>
 
-    <div class="footer-note">Sistema de gestão do evento • Projete Capoeira Liberdade</div>
+    <div class="py-2 text-center text-sm text-white/75">Sistema de gestão do evento • Projete Capoeira Liberdade</div>
   </div>
 
   <script>
-    const STORAGE_KEY = 'projete_capoeira_liberdade_vendas';
-    const STORAGE_LOGO = 'projete_capoeira_liberdade_logo';
-    const STORAGE_BG = 'projete_capoeira_liberdade_bg';
-    const STORAGE_WHATS = 'projete_capoeira_liberdade_whats';
+    const STORAGE_VENDAS = 'projete_capoeira_liberdade_vendas';
+    const STORAGE_CUSTOS = 'projete_capoeira_custos_evento';
 
-    let state = {
-      carrinhoAtual: [],
-      vendas: [
-        { id: 1, ordem: '0001', horario: '14:05', nomeCliente: 'João', produto: 'X-Burger Artesanal', categoria: 'Hambúrguer', quantidade: 2, preco: 18.00, comprovanteNome: '' },
-        { id: 2, ordem: '0002', horario: '14:12', nomeCliente: 'Maria', produto: 'Refrigerante Lata', categoria: 'Bebida', quantidade: 3, preco: 6.00, comprovanteNome: '' }
-      ],
-      custos: [
-        { id: 1001, descricao: 'Transporte', valor: 30.00 }
-      ],
-      logo: '',
-      background: '',
-      whatsNumero: ''
-    };
+    let vendasState = { vendas: [] };
+    let custosState = { custos: [] };
 
-    function salvar() {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
-    }
-
-    function carregar() {
-      const raw = localStorage.getItem(STORAGE_KEY);
-      if (raw) {
+    function carregarDados() {
+      const vendasRaw = localStorage.getItem(STORAGE_VENDAS);
+      if (vendasRaw) {
         try {
-          const data = JSON.parse(raw);
-          state = { ...state, ...data };
+          vendasState = { ...vendasState, ...JSON.parse(vendasRaw) };
         } catch (e) {
-          console.error('Erro ao carregar dados', e);
+          console.error('Erro ao carregar vendas', e);
         }
       }
 
-      const logoSalva = localStorage.getItem(STORAGE_LOGO);
-      if (logoSalva) state.logo = logoSalva;
-      const bgSalvo = localStorage.getItem(STORAGE_BG);
-      if (bgSalvo) state.background = bgSalvo;
-      const whatsSalvo = localStorage.getItem(STORAGE_WHATS);
-      if (whatsSalvo) state.whatsNumero = whatsSalvo;
+      const custosRaw = localStorage.getItem(STORAGE_CUSTOS);
+      if (custosRaw) {
+        try {
+          custosState = { ...custosState, ...JSON.parse(custosRaw) };
+        } catch (e) {
+          console.error('Erro ao carregar custos', e);
+        }
+      }
     }
 
     function moeda(valor) {
       return Number(valor || 0).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
     }
 
-    function novoId(lista) {
-      return lista.length ? Math.max(...lista.map(item => Number(item.id) || 0)) + 1 : 1;
-    }
-
-    function proximaOrdem() {
-      const maxOrdem = state.vendas.reduce((max, item) => {
-        const atual = Number(item.ordem || 0);
-        return atual > max ? atual : max;
-      }, 0);
-      return String(maxOrdem + 1).padStart(4, '0');
-    }
-
-    function horaAtual() {
-      const agora = new Date();
-      return agora.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
-    }
-
     function totalFaturamento() {
-      return state.vendas.reduce((soma, item) => soma + (item.quantidade * item.preco), 0);
+      return (vendasState.vendas || []).reduce((soma, venda) => {
+        const itens = Array.isArray(venda.itens) && venda.itens.length
+          ? venda.itens
+          : [{ quantidade: venda.quantidade || 0, preco: venda.preco || 0 }];
+        return soma + itens.reduce((acc, item) => acc + (Number(item.quantidade || 0) * Number(item.preco || 0)), 0);
+      }, 0);
     }
 
     function totalCustos() {
-      return state.custos.reduce((soma, item) => soma + Number(item.valor || 0), 0);
+      return (custosState.custos || []).reduce((soma, custo) => soma + Number(custo.valor || 0), 0);
     }
 
     function totalItensVendidos() {
-      return state.vendas.reduce((soma, item) => soma + Number(item.quantidade || 0), 0);
+      return (vendasState.vendas || []).reduce((soma, venda) => {
+        const itens = Array.isArray(venda.itens) && venda.itens.length
+          ? venda.itens
+          : [{ quantidade: venda.quantidade || 0 }];
+        return soma + itens.reduce((acc, item) => acc + Number(item.quantidade || 0), 0);
+      }, 0);
     }
 
     function ticketMedio() {
-      if (!state.vendas.length) return 0;
-      return totalFaturamento() / state.vendas.length;
-    }
-
-    function atualizarResumo() {
-      const faturamento = totalFaturamento();
-      const custos = totalCustos();
-      const lucro = faturamento - custos;
-
-      document.getElementById('faturamento').textContent = moeda(faturamento);
-      document.getElementById('custos').textContent = moeda(custos);
-      document.getElementById('lucro').textContent = moeda(lucro);
-      document.getElementById('itensVendidos').textContent = totalItensVendidos();
-      document.getElementById('ticketMedio').textContent = moeda(ticketMedio());
-      document.getElementById('qtdVendas').textContent = state.vendas.length;
-      document.getElementById('qtdCustos').textContent = state.custos.length;
-
-      const lucroEl = document.getElementById('lucro');
-      lucroEl.classList.remove('saldo-positivo', 'saldo-negativo', 'saldo-neutro');
-      if (lucro > 0) lucroEl.classList.add('saldo-positivo');
-      else if (lucro < 0) lucroEl.classList.add('saldo-negativo');
-      else lucroEl.classList.add('saldo-neutro');
+      const totalVendas = (vendasState.vendas || []).length;
+      if (!totalVendas) return 0;
+      return totalFaturamento() / totalVendas;
     }
 
     function montarTicket(venda) {
@@ -675,9 +230,9 @@ A próxima venda aparecerá aqui com número do pedido e horário.</div>
         'PROJETE CAPOEIRA LIBERDADE',
         '================================',
         'TICKET DE VENDA',
-        'Pedido: #' + venda.ordem,
-        'Horário: ' + venda.horario,
-        'Cliente: ' + venda.nomeCliente,
+        'Pedido: #' + (venda.ordem || '-'),
+        'Horário: ' + (venda.horario || '-'),
+        'Cliente: ' + (venda.nomeCliente || '-'),
         '--------------------------------',
         linhasItens,
         '--------------------------------',
@@ -688,390 +243,73 @@ A próxima venda aparecerá aqui com número do pedido e horário.</div>
       ].join('\n');
     }
 
-    function atualizarPreviewTicket() {
-      const preview = document.getElementById('ticketPreview');
-      if (!state.vendas.length) {
-        preview.textContent = 'TICKET PROFISSIONAL\n\nA próxima venda aparecerá aqui com número do pedido e horário.';
-        return;
-      }
-      const ultima = state.vendas[state.vendas.length - 1];
-      preview.textContent = montarTicket(ultima);
-    }
+    function atualizarResumo() {
+      const faturamento = totalFaturamento();
+      const custos = totalCustos();
+      const lucro = faturamento - custos;
 
-    function atualizarCarrinhoPreview() {
-      const preview = document.getElementById('carrinhoPreview');
-      if (!preview) return;
-      if (!state.carrinhoAtual.length) {
-        preview.textContent = 'Nenhum item no pedido.';
-        return;
-      }
-      const texto = state.carrinhoAtual.map((item, index) => {
-        const subtotal = Number(item.quantidade || 0) * Number(item.preco || 0);
-        return `${index + 1}. ${item.produto} | ${item.categoria} | ${item.quantidade} x ${moeda(item.preco)} = ${moeda(subtotal)}`;
-      }).join('\n');
-      const total = state.carrinhoAtual.reduce((soma, item) => soma + (Number(item.quantidade || 0) * Number(item.preco || 0)), 0);
-      preview.textContent = texto + '\n--------------------------------\nTotal parcial: ' + moeda(total);
+      document.getElementById('faturamento').textContent = moeda(faturamento);
+      document.getElementById('custos').textContent = moeda(custos);
+      document.getElementById('lucro').textContent = moeda(lucro);
+      document.getElementById('itensVendidos').textContent = totalItensVendidos();
+      document.getElementById('ticketMedio').textContent = moeda(ticketMedio());
+      document.getElementById('qtdVendas').textContent = (vendasState.vendas || []).length;
+      document.getElementById('qtdCustos').textContent = (custosState.custos || []).length;
+
+      const lucroEl = document.getElementById('lucro');
+      lucroEl.classList.remove('text-brand-green', 'text-brand-red', 'text-brand-blue');
+      if (lucro > 0) lucroEl.classList.add('text-brand-green');
+      else if (lucro < 0) lucroEl.classList.add('text-brand-red');
+      else lucroEl.classList.add('text-brand-blue');
     }
 
     function renderDashboardVendas() {
       const tbody = document.getElementById('dashboardVendas');
       tbody.innerHTML = '';
-      const ultimas = [...state.vendas].slice(-5).reverse();
-      if (!ultimas.length) {
-        tbody.innerHTML = '<tr><td colspan="7" class="muted">Nenhuma venda registrada.</td></tr>';
-        return;
-      }
-      ultimas.forEach(venda => {
-        const totalVenda = Array.isArray(venda.itens) && venda.itens.length
-          ? venda.itens.reduce((soma, item) => soma + (Number(item.quantidade || 0) * Number(item.preco || 0)), 0)
-          : (venda.quantidade * venda.preco);
-        const quantidadeTotal = Array.isArray(venda.itens) && venda.itens.length
-          ? venda.itens.reduce((soma, item) => soma + Number(item.quantidade || 0), 0)
-          : venda.quantidade;
-        const descricaoProdutos = Array.isArray(venda.itens) && venda.itens.length
-          ? venda.itens.map(item => item.produto).join(', ')
-          : venda.produto;
-        const tr = document.createElement('tr');
-        tr.innerHTML = `
-          <td><strong>#${venda.ordem || '-'}</strong></td>
-          <td>${venda.horario || '-'}</td>
-          <td><strong>${venda.nomeCliente || '-'}</strong></td>
-          <td><strong>${descricaoProdutos}</strong></td>
-          <td><span class="badge ${((venda.itens?.[0]?.categoria) || venda.categoria) === 'Bebida' ? 'badge-bebida' : 'badge-hamburguer'}">Pedido</span></td>
-          <td>${quantidadeTotal}</td>
-          <td><strong>${moeda(totalVenda)}</strong></td>
-        `;
-        tbody.appendChild(tr);
-      });
-    }
+      const ultimas = [...(vendasState.vendas || [])].slice(-5).reverse();
 
-    function renderVendas() {
-      const tbody = document.getElementById('tabelaVendas');
-      tbody.innerHTML = '';
-      if (!state.vendas.length) {
-        tbody.innerHTML = '<tr><td colspan="9" class="muted">Nenhuma venda registrada.</td></tr>';
+      if (!ultimas.length) {
+        tbody.innerHTML = '<tr><td colspan="7" class="px-4 py-6 text-sm text-slate-500">Nenhuma venda registrada.</td></tr>';
         return;
       }
-      state.vendas.forEach(venda => {
+
+      ultimas.forEach(venda => {
         const itens = Array.isArray(venda.itens) && venda.itens.length
           ? venda.itens
           : [{ produto: venda.produto, categoria: venda.categoria, quantidade: venda.quantidade, preco: venda.preco }];
-        const descricaoProdutos = itens.map(item => `${item.produto} (${item.quantidade}x)`).join(', ');
         const totalVenda = itens.reduce((soma, item) => soma + (Number(item.quantidade || 0) * Number(item.preco || 0)), 0);
         const quantidadeTotal = itens.reduce((soma, item) => soma + Number(item.quantidade || 0), 0);
-        const precoMedio = quantidadeTotal ? totalVenda / quantidadeTotal : 0;
+        const descricaoProdutos = itens.map(item => item.produto).join(', ');
+
         const tr = document.createElement('tr');
+        tr.className = 'border-b border-slate-100';
         tr.innerHTML = `
-          <td><strong>#${venda.ordem || '-'}</strong></td>
-          <td>${venda.horario || '-'}</td>
-          <td><strong>${venda.nomeCliente || '-'}</strong></td>
-          <td><strong>${descricaoProdutos}</strong></td>
-          <td><span class="badge ${(itens[0]?.categoria) === 'Bebida' ? 'badge-bebida' : 'badge-hamburguer'}">Pedido</span></td>
-          <td>${quantidadeTotal}</td>
-          <td>${moeda(precoMedio)}</td>
-          <td><strong>${moeda(totalVenda)}</strong></td>
-          <td>
-            <div style="display:flex; gap:8px; flex-wrap:wrap;">
-              <button class="btn btn-secondary btn-small" type="button" onclick="copiarTicket(${venda.id})">Copiar ticket</button>
-              <button class="btn btn-success btn-small" type="button" onclick="enviarWhatsApp(${venda.id})">WhatsApp</button>
-              <button class="btn btn-danger btn-small" type="button" onclick="removerVenda(${venda.id})">Excluir</button>
-            </div>
-          </td>
+          <td class="px-4 py-3 font-bold">#${venda.ordem || '-'}</td>
+          <td class="px-4 py-3">${venda.horario || '-'}</td>
+          <td class="px-4 py-3 font-semibold">${venda.nomeCliente || '-'}</td>
+          <td class="px-4 py-3 font-semibold">${descricaoProdutos}</td>
+          <td class="px-4 py-3"><span class="inline-block rounded-full bg-blue-50 px-3 py-1 text-xs font-bold text-blue-700">Pedido</span></td>
+          <td class="px-4 py-3">${quantidadeTotal}</td>
+          <td class="px-4 py-3 font-bold">${moeda(totalVenda)}</td>
         `;
         tbody.appendChild(tr);
       });
     }
 
-    function aplicarLogo() {
-      document.getElementById('logoPreview').src = state.logo || 'img/Projete-Liberdade_capoeira.png';
-    }
-
-    function aplicarBackground() {
-      document.body.style.setProperty('--bg-image', `url('${state.background || 'img/Projete-Liberdade_capoeira.png'}')`);
-    }
-
-    function atualizarTela() {
-      atualizarResumo();
-      renderDashboardVendas();
-      renderVendas();
-      atualizarPreviewTicket();
-      atualizarCarrinhoPreview();
-      aplicarLogo();
-      aplicarBackground();
-      document.getElementById('whatsNumero').value = state.whatsNumero || '';
-      salvar();
-    }
-
-    function abrirPagina(nome) {
-      document.querySelectorAll('.page').forEach(page => page.classList.remove('active'));
-      document.querySelectorAll('.tab-btn[data-page]').forEach(btn => btn.classList.remove('active'));
-      document.getElementById(nome).classList.add('active');
-      const botao = document.querySelector(`.tab-btn[data-page="${nome}"]`);
-      if (botao) botao.classList.add('active');
-    }
-
-    function adicionarProdutoRapido(){
-      const nome = prompt('Nome do produto:');
-      if(!nome) return;
-      const preco = prompt('Preço do produto (R$):');
-      if(preco === null) return;
-      const categoria = prompt('Categoria (Hambúrguer ou Bebida):', 'Hambúrguer');
-
-      document.getElementById('produto').value = nome;
-      document.getElementById('preco').value = Number(preco) || 0;
-      document.getElementById('categoria').value = categoria || 'Hambúrguer';
-
-      alert('Produto preenchido! Agora informe cliente e quantidade.');
-    }
-
-    function adicionarItemCarrinho() {
-      const nomeCliente = document.getElementById('nomeCliente').value.trim();
-      const produto = document.getElementById('produto').value.trim();
-      const categoria = document.getElementById('categoria').value;
-      const quantidade = Number(document.getElementById('quantidade').value);
-      const preco = Number(document.getElementById('preco').value);
-
-      if (!nomeCliente) {
-        alert('Informe o nome da pessoa antes de adicionar itens.');
-        document.getElementById('nomeCliente').focus();
+    function atualizarPreviewTicket() {
+      const preview = document.getElementById('ticketPreview');
+      const vendas = vendasState.vendas || [];
+      if (!vendas.length) {
+        preview.textContent = 'TICKET PROFISSIONAL\n\nA última venda aparecerá aqui com número do pedido e horário.';
         return;
       }
-      if (!produto || quantidade <= 0 || preco < 0) {
-        alert('Preencha produto, quantidade e preço corretamente.');
-        return;
-      }
-
-      state.carrinhoAtual.push({ produto, categoria, quantidade, preco });
-      atualizarCarrinhoPreview();
-
-      document.getElementById('produto').value = '';
-      document.getElementById('quantidade').value = 1;
-      document.getElementById('preco').value = '';
-      document.getElementById('categoria').value = 'Hambúrguer';
+      preview.textContent = montarTicket(vendas[vendas.length - 1]);
     }
 
-    document.getElementById('formVenda').addEventListener('submit', function(e) {
-      e.preventDefault();
-      const nomeCliente = document.getElementById('nomeCliente').value.trim();
-      const produto = document.getElementById('produto').value.trim();
-      const categoria = document.getElementById('categoria').value;
-      const quantidade = Number(document.getElementById('quantidade').value);
-      const preco = Number(document.getElementById('preco').value);
-      if (!nomeCliente) return;
-
-      const itens = [...state.carrinhoAtual];
-      if (produto && quantidade > 0 && preco >= 0) {
-        itens.push({ produto, categoria, quantidade, preco });
-      }
-      if (!itens.length) {
-        alert('Adicione pelo menos um item antes de fechar a venda.');
-        return;
-      }
-
-      const primeiro = itens[0];
-      state.vendas.push({
-        id: novoId(state.vendas),
-        ordem: proximaOrdem(),
-        horario: horaAtual(),
-        nomeCliente,
-        produto: primeiro.produto,
-        categoria: primeiro.categoria,
-        quantidade: primeiro.quantidade,
-        preco: primeiro.preco,
-        itens,
-        comprovanteNome: ''
-      });
-
-      state.carrinhoAtual = [];
-      this.reset();
-      document.getElementById('quantidade').value = 1;
-      document.getElementById('categoria').value = 'Hambúrguer';
-      atualizarTela();
-      abrirPagina('vendas');
-    });
-
-    function removerVenda(id) {
-      state.vendas = state.vendas.filter(item => item.id !== id);
-      atualizarTela();
-    }
-
-    function salvarNumeroWhatsApp() {
-      state.whatsNumero = (document.getElementById('whatsNumero').value || '').replace(/[^0-9]/g, '');
-      localStorage.setItem(STORAGE_WHATS, state.whatsNumero);
-      salvar();
-      alert('Número salvo com sucesso.');
-    }
-
-    function buscarVenda(id) {
-      return state.vendas.find(item => item.id === id);
-    }
-
-    async function copiarTicket(id) {
-      const venda = buscarVenda(id);
-      if (!venda) return;
-      const ticket = montarTicket(venda);
-      try {
-        await navigator.clipboard.writeText(ticket);
-        alert('Ticket copiado com sucesso.');
-      } catch (e) {
-        alert(ticket);
-      }
-    }
-
-    function enviarWhatsApp(id) {
-      const venda = buscarVenda(id);
-      if (!venda) return;
-      if (!state.whatsNumero) {
-        alert('Cadastre primeiro o número do WhatsApp na aba Configurações.');
-        abrirPagina('config');
-        return;
-      }
-      const mensagem = montarTicket(venda);
-      window.open(`https://wa.me/${state.whatsNumero}?text=${encodeURIComponent(mensagem)}`, '_blank');
-    }
-
-    function toggleExportMenu(event) {
-      event.stopPropagation();
-      document.getElementById('exportMenu').classList.toggle('open');
-    }
-
-    document.addEventListener('click', function(e) {
-      const menu = document.getElementById('exportMenu');
-      const btn = e.target.closest('[onclick*="toggleExportMenu"]');
-      const inside = e.target.closest('#exportMenu');
-      if (!btn && !inside) menu.classList.remove('open');
-    });
-
-    function gerarWorkbookXML(nomeAba, colunas, linhas) {
-      const escapeXml = (valor) => String(valor ?? '')
-        .replace(/&/g, '&amp;')
-        .replace(/</g, '&lt;')
-        .replace(/>/g, '&gt;')
-        .replace(/"/g, '&quot;')
-        .replace(/'/g, '&apos;');
-
-      const linhasXml = [];
-      linhasXml.push('<Row>' + colunas.map(col => '<Cell><Data ss:Type="String">' + escapeXml(col) + '</Data></Cell>').join('') + '</Row>');
-      linhas.forEach(linha => {
-        linhasXml.push('<Row>' + linha.map(valor => {
-          const numero = typeof valor === 'number' && Number.isFinite(valor);
-          return '<Cell><Data ss:Type="' + (numero ? 'Number' : 'String') + '">' + escapeXml(valor) + '</Data></Cell>';
-        }).join('') + '</Row>');
-      });
-
-      return '<?xml version="1.0"?>' +
-        '<?mso-application progid="Excel.Sheet"?>' +
-        '<Workbook xmlns="urn:schemas-microsoft-com:office:spreadsheet" xmlns:ss="urn:schemas-microsoft-com:office:spreadsheet">' +
-        '<Worksheet ss:Name="' + escapeXml(nomeAba) + '"><Table>' + linhasXml.join('') + '</Table></Worksheet></Workbook>';
-    }
-
-    function gerarWorkbookXMLCompleto() {
-      const escapeXml = (valor) => String(valor ?? '')
-        .replace(/&/g, '&amp;')
-        .replace(/</g, '&lt;')
-        .replace(/>/g, '&gt;')
-        .replace(/"/g, '&quot;')
-        .replace(/'/g, '&apos;');
-
-      const montarSheet = (nome, colunas, linhas) => {
-        const header = '<Row>' + colunas.map(col => '<Cell><Data ss:Type="String">' + escapeXml(col) + '</Data></Cell>').join('') + '</Row>';
-        const body = linhas.map(linha => '<Row>' + linha.map(valor => {
-          const numero = typeof valor === 'number' && Number.isFinite(valor);
-          return '<Cell><Data ss:Type="' + (numero ? 'Number' : 'String') + '">' + escapeXml(valor) + '</Data></Cell>';
-        }).join('') + '</Row>').join('');
-        return '<Worksheet ss:Name="' + escapeXml(nome) + '"><Table>' + header + body + '</Table></Worksheet>';
-      };
-
-      const resumo = [
-        ['Faturamento total', totalFaturamento()],
-        ['Custos do evento', totalCustos()],
-        ['Lucro estimado', totalFaturamento() - totalCustos()],
-        ['Itens vendidos', totalItensVendidos()],
-        ['Quantidade de vendas', state.vendas.length],
-        ['Quantidade de custos', state.custos.length]
-      ];
-
-      const vendas = state.vendas.map(venda => [
-        venda.ordem || '',
-        venda.horario || '',
-        venda.nomeCliente || '',
-        venda.produto || '',
-        venda.categoria || '',
-        venda.quantidade || 0,
-        venda.preco || 0,
-        (venda.quantidade || 0) * (venda.preco || 0)
-      ]);
-
-      const custos = state.custos.map(custo => [custo.descricao || '', custo.valor || 0]);
-
-      return '<?xml version="1.0"?>' +
-        '<?mso-application progid="Excel.Sheet"?>' +
-        '<Workbook xmlns="urn:schemas-microsoft-com:office:spreadsheet" xmlns:ss="urn:schemas-microsoft-com:office:spreadsheet">' +
-        montarSheet('Resumo', ['Indicador', 'Valor'], resumo) +
-        montarSheet('Vendas', ['Ordem', 'Horario', 'Cliente', 'Produto', 'Categoria', 'Quantidade', 'Preco Unitario', 'Total'], vendas) +
-        montarSheet('Custos', ['Descricao', 'Valor'], custos) +
-        '</Workbook>';
-    }
-
-    function baixarArquivo(conteudo, nomeArquivo) {
-      const blob = new Blob([conteudo], { type: 'application/vnd.ms-excel;charset=utf-8;' });
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.href = url;
-      a.download = nomeArquivo;
-      a.click();
-      URL.revokeObjectURL(url);
-    }
-
-    function exportarPlanilha(tipo) {
-      let conteudo = '';
-      let nomeArquivo = '';
-
-      if (tipo === 'vendas') {
-        conteudo = gerarWorkbookXML(
-          'Vendas',
-          ['Ordem', 'Horario', 'Cliente', 'Produto', 'Categoria', 'Quantidade', 'Preco Unitario', 'Total'],
-          state.vendas.map(v => [v.ordem, v.horario, v.nomeCliente, v.produto, v.categoria, v.quantidade, v.preco, v.quantidade * v.preco])
-        );
-        nomeArquivo = 'projete_capoeira_liberdade_vendas.xls';
-      } else if (tipo === 'custos') {
-        conteudo = gerarWorkbookXML('Custos', ['Descricao', 'Valor'], state.custos.map(c => [c.descricao, c.valor]));
-        nomeArquivo = 'projete_capoeira_liberdade_custos.xls';
-      } else {
-        conteudo = gerarWorkbookXMLCompleto();
-        nomeArquivo = 'projete_capoeira_liberdade_vendas_custos.xls';
-      }
-
-      baixarArquivo(conteudo, nomeArquivo);
-      document.getElementById('exportMenu').classList.remove('open');
-    }
-
-    function salvarLogo() {
-      const file = document.getElementById('logoInput').files[0];
-      if (!file) return alert('Selecione uma imagem de logo.');
-      const reader = new FileReader();
-      reader.onload = function(e) {
-        state.logo = e.target.result;
-        localStorage.setItem(STORAGE_LOGO, state.logo);
-        atualizarTela();
-      };
-      reader.readAsDataURL(file);
-    }
-
-    function salvarBackground() {
-      const file = document.getElementById('bgInput').files[0];
-      if (!file) return alert('Selecione uma imagem de background.');
-      const reader = new FileReader();
-      reader.onload = function(e) {
-        state.background = e.target.result;
-        localStorage.setItem(STORAGE_BG, state.background);
-        atualizarTela();
-      };
-      reader.readAsDataURL(file);
-    }
-
-    carregar();
-    atualizarTela();
+    carregarDados();
+    atualizarResumo();
+    renderDashboardVendas();
+    atualizarPreviewTicket();
   </script>
 </body>
 </html>
