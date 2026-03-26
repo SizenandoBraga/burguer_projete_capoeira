@@ -1,69 +1,1014 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8">
-  <title>Projete Capoeira Liberdade</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Projete Capoeira Liberdade | Gestão de Vendas</title>
+  <style>
+    :root {
+      --primary: #f97316;
+      --primary-dark: #ea580c;
+      --secondary: #16a34a;
+      --danger: #dc2626;
+      --info: #2563eb;
+      --text: #0f172a;
+      --muted: #64748b;
+      --line: rgba(148, 163, 184, 0.22);
+      --white: rgba(255,255,255,0.94);
+      --shadow: 0 18px 60px rgba(2, 6, 23, 0.35);
+      --bg-image: url('img/Projete-Liberdade_capoeira.png');
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: Arial, Helvetica, sans-serif;
+      color: white;
+      min-height: 100vh;
+      background:
+        linear-gradient(rgba(7, 17, 31, 0.72), rgba(7, 17, 31, 0.90)),
+        var(--bg-image) center center / cover fixed;
+    }
+
+    .app {
+      max-width: 1450px;
+      margin: 0 auto;
+      padding: 24px;
+    }
+
+    .hero {
+      background: rgba(255,255,255,0.10);
+      border: 1px solid rgba(255,255,255,0.14);
+      backdrop-filter: blur(10px);
+      border-radius: 28px;
+      padding: 24px;
+      box-shadow: var(--shadow);
+      margin-bottom: 20px;
+    }
+
+    .hero-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .logo {
+      width: 78px;
+      height: 78px;
+      border-radius: 20px;
+      background: rgba(255,255,255,0.14);
+      overflow: hidden;
+      border: 1px solid rgba(255,255,255,0.16);
+    }
+
+    .logo img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .brand h1 {
+      font-size: 30px;
+      margin-bottom: 6px;
+    }
+
+    .brand p {
+      color: rgba(255,255,255,0.84);
+      font-size: 14px;
+    }
+
+    .hero-actions {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      flex-wrap: wrap;
+      position: relative;
+    }
+
+    .btn {
+      border: 0;
+      cursor: pointer;
+      border-radius: 14px;
+      padding: 12px 16px;
+      font-weight: 700;
+      font-size: 14px;
+    }
+
+    .btn-primary { background: linear-gradient(135deg, var(--primary), var(--primary-dark)); color: white; }
+    .btn-secondary { background: rgba(255,255,255,0.12); color: white; border: 1px solid rgba(255,255,255,0.12); }
+    .btn-success { background: var(--secondary); color: white; }
+    .btn-danger { background: var(--danger); color: white; }
+    .btn-small { padding: 8px 12px; font-size: 12px; }
+
+    .tabs {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-top: 18px;
+    }
+
+    .tab-btn {
+      border: 1px solid rgba(255,255,255,0.12);
+      background: rgba(255,255,255,0.10);
+      color: white;
+      padding: 10px 16px;
+      border-radius: 999px;
+      cursor: pointer;
+      font-weight: 700;
+    }
+
+    .tab-btn.active { background: white; color: #0f172a; }
+
+    .menu-export {
+      display: none;
+      position: absolute;
+      top: 56px;
+      right: 0;
+      min-width: 260px;
+      z-index: 50;
+      background: rgba(15,23,42,0.96);
+      border: 1px solid rgba(255,255,255,0.12);
+      border-radius: 18px;
+      padding: 12px;
+      box-shadow: 0 20px 50px rgba(0,0,0,0.35);
+    }
+
+    .menu-export.open { display: block; }
+    .menu-export-title {
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: .08em;
+      color: rgba(255,255,255,.6);
+      margin-bottom: 10px;
+    }
+
+    .page { display: none; }
+    .page.active { display: block; }
+
+    .card {
+      background: var(--white);
+      color: var(--text);
+      border-radius: 26px;
+      box-shadow: var(--shadow);
+      padding: 20px;
+      margin-bottom: 18px;
+      border: 1px solid rgba(255,255,255,0.44);
+    }
+
+    .section-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-bottom: 16px;
+    }
+
+    .section-head h2 { font-size: 22px; }
+    .muted { color: var(--muted); font-size: 14px; }
+
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+    }
+
+    .stat {
+      background: linear-gradient(180deg, white, #f8fafc);
+      border: 1px solid var(--line);
+      border-radius: 20px;
+      padding: 18px;
+    }
+
+    .stat-label { color: var(--muted); font-size: 13px; margin-bottom: 8px; font-weight: 700; }
+    .stat-value { font-size: 28px; font-weight: 800; }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(12, 1fr);
+      gap: 18px;
+    }
+
+    .col-5 { grid-column: span 5; }
+    .col-7 { grid-column: span 7; }
+    .col-6 { grid-column: span 6; }
+    .col-12 { grid-column: span 12; }
+
+    form {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 14px;
+    }
+
+    .field {
+      display: flex;
+      flex-direction: column;
+      gap: 7px;
+    }
+
+    .field.full { grid-column: 1 / -1; }
+
+    label {
+      font-size: 13px;
+      font-weight: 700;
+      color: #1e293b;
+    }
+
+    input, select {
+      width: 100%;
+      padding: 13px 14px;
+      border-radius: 14px;
+      border: 1px solid #dbe3ee;
+      background: white;
+      font-size: 15px;
+      outline: none;
+    }
+
+    .table-wrap {
+      overflow-x: auto;
+      border-radius: 18px;
+      border: 1px solid var(--line);
+      background: white;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      min-width: 760px;
+    }
+
+    th, td {
+      padding: 14px 12px;
+      border-bottom: 1px solid #eef2f7;
+      text-align: left;
+      font-size: 14px;
+      vertical-align: middle;
+    }
+
+    th {
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: .06em;
+      color: #475569;
+      background: #f8fafc;
+      font-weight: 800;
+    }
+
+    .badge {
+      display: inline-block;
+      padding: 7px 11px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .badge-hamburguer { background: rgba(249,115,22,0.12); color: #c2410c; }
+    .badge-bebida { background: rgba(37,99,235,0.10); color: #1d4ed8; }
+
+    .kpis-mini {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 14px;
+    }
+
+    .kpi-box {
+      background: white;
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      padding: 16px;
+    }
+
+    .kpi-box strong { display: block; font-size: 22px; margin-top: 6px; }
+
+    .note {
+      margin-top: 12px;
+      padding: 14px;
+      border-radius: 16px;
+      background: rgba(249,115,22,0.08);
+      color: #9a3412;
+      border: 1px dashed rgba(249,115,22,0.22);
+      font-size: 13px;
+      line-height: 1.5;
+    }
+
+    .footer-note {
+      color: rgba(255,255,255,0.74);
+      text-align: center;
+      font-size: 13px;
+      padding: 8px 0 18px;
+    }
+
+    @media (max-width: 1100px) {
+      .stats, .kpis-mini { grid-template-columns: repeat(2, 1fr); }
+      .col-5, .col-6, .col-7 { grid-column: span 12; }
+    }
+
+    @media (max-width: 760px) {
+      .app { padding: 14px; }
+      .brand h1 { font-size: 24px; }
+      .stats, .kpis-mini, form { grid-template-columns: 1fr; }
+      .logo { width: 62px; height: 62px; }
+      .hero { padding: 18px; }
+    }
+  </style>
 </head>
-<body style="font-family: Arial; background:#0b1220; color:white; padding:20px;">
+<body>
+  <div class="app">
+    <header class="hero">
+      <div class="hero-top">
+        <div class="brand">
+          <div class="logo">
+            <img id="logoPreview" src="img/Projete-Liberdade_capoeira.png" alt="Logo do evento" />
+          </div>
+          <div>
+            <h1>Projete Capoeira Liberdade</h1>
+            <p>Painel de gestão de vendas, custos e operação do evento.</p>
+          </div>
+        </div>
 
-  <h1>Projete Capoeira Liberdade</h1>
+        <div class="hero-actions">
+          <button class="btn btn-secondary" type="button" onclick="toggleExportMenu(event)">Exportar planilhas</button>
+          <div id="exportMenu" class="menu-export">
+            <div class="menu-export-title">Exportar planilhas</div>
+            <div style="display:grid; gap:8px;">
+              <button class="btn btn-secondary" type="button" onclick="exportarPlanilha('vendas')" style="width:100%; text-align:left;">Somente vendas</button>
+              <button class="btn btn-secondary" type="button" onclick="exportarPlanilha('custos.html)" style="width:100%; text-align:left;">Somente custos</button>
+              <button class="btn btn-primary" type="button" onclick="exportarPlanilha('completa')" style="width:100%; text-align:left;">Vendas + custos</button>
+            </div>
+          </div>
+          <button class="btn btn-secondary" type="button" onclick="document.getElementById('logoInput').click()">Trocar logo</button>
+          <button class="btn btn-primary" type="button" onclick="abrirPagina('vendas')">Ir para vendas</button>
+        </div>
+      </div>
 
-  <div style="margin-top:20px; display:flex; gap:10px; flex-wrap:wrap;">
-    
-    <!-- IR PARA VENDAS (mesma página) -->
-    <button onclick="alert('Use a aba de vendas abaixo')">
-      Vendas
-    </button>
+      <div class="tabs">
+        <button class="tab-btn active" data-page="dashboard" onclick="abrirPagina('dashboard')">Dashboard</button>
+        <button class="tab-btn" data-page="vendas" onclick="abrirPagina('vendas')">Vendas</button>
+        <button class="tab-btn" data-page="custos" onclick="abrirPagina('custos.html')">Custos</button>
+        <button class="tab-btn" data-page="config" onclick="abrirPagina('config')">Configurações</button>
+      </div>
+    </header>
 
-    <!-- 🔥 ABRIR PAGINA DE CUSTOS (CORRETO) -->
-    <button onclick="window.location.href='custos.html'">
-      Custos do Evento
-    </button>
+    <main>
+      <section id="dashboard" class="page active">
+        <div class="card">
+          <div class="section-head">
+            <div>
+              <h2>Dashboard financeiro</h2>
+              <div class="muted">Visão geral do evento em tempo real.</div>
+            </div>
+          </div>
 
-    <!-- EXPORTAÇÃO -->
-    <button onclick="exportar('vendas')">
-      Exportar Vendas
-    </button>
+          <div class="stats">
+            <div class="stat"><div class="stat-label">Faturamento total</div><div class="stat-value" id="faturamento">R$ 0,00</div></div>
+            <div class="stat"><div class="stat-label">Custos do evento</div><div class="stat-value" id="custos">R$ 0,00</div></div>
+            <div class="stat"><div class="stat-label">Lucro estimado</div><div class="stat-value" id="lucro">R$ 0,00</div></div>
+            <div class="stat"><div class="stat-label">Itens vendidos</div><div class="stat-value" id="itensVendidos">0</div></div>
+          </div>
+        </div>
 
-    <button onclick="exportar('custos')">
-      Exportar Custos
-    </button>
+        <div class="grid">
+          <div class="col-7">
+            <div class="card">
+              <div class="section-head">
+                <div>
+                  <h2>Últimas vendas</h2>
+                  <div class="muted">Resumo dos lançamentos recentes.</div>
+                </div>
+              </div>
+              <div class="table-wrap">
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Cliente</th>
+                      <th>Produto</th>
+                      <th>Categoria</th>
+                      <th>Qtd</th>
+                      <th>Total</th>
+                    </tr>
+                  </thead>
+                  <tbody id="dashboardVendas"></tbody>
+                </table>
+              </div>
+            </div>
+          </div>
 
-    <button onclick="exportar('completo')">
-      Exportar Tudo
-    </button>
+          <div class="col-5">
+            <div class="card">
+              <div class="section-head">
+                <div>
+                  <h2>Indicadores</h2>
+                  <div class="muted">Leitura rápida do caixa.</div>
+                </div>
+              </div>
+              <div class="kpis-mini">
+                <div class="kpi-box"><span class="muted">Ticket médio</span><strong id="ticketMedio">R$ 0,00</strong></div>
+                <div class="kpi-box"><span class="muted">Qtd. vendas</span><strong id="qtdVendas">0</strong></div>
+                <div class="kpi-box"><span class="muted">Qtd. custos</span><strong id="qtdCustos">0</strong></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
 
+      <section id="vendas" class="page">
+        <div class="grid">
+          <div class="col-5">
+            <div class="card">
+              <div class="section-head"><h2>Registrar venda</h2></div>
+              <form id="formVenda">
+                <div class="field">
+                  <label for="nomeCliente">Nome da pessoa</label>
+                  <input id="nomeCliente" placeholder="Ex.: João, Maria, Mestre Paulo" required />
+                </div>
+                <div class="field">
+                  <label for="produto">Produto</label>
+                  <input id="produto" placeholder="Ex.: X-Burger Artesanal" required />
+                </div>
+                <div class="field">
+                  <label for="categoria">Categoria</label>
+                  <select id="categoria">
+                    <option value="Hambúrguer">Hambúrguer</option>
+                    <option value="Bebida">Bebida</option>
+                  </select>
+                </div>
+                <div class="field">
+                  <label for="quantidade">Quantidade</label>
+                  <input id="quantidade" type="number" min="1" value="1" required />
+                </div>
+                <div class="field full">
+                  <label for="preco">Preço unitário (R$)</label>
+                  <input id="preco" type="number" min="0" step="0.01" placeholder="0.00" required />
+                </div>
+                <div class="field full">
+                  <button class="btn btn-primary" type="submit">Adicionar venda</button>
+                </div>
+              </form>
+            </div>
+          </div>
+
+          <div class="col-7">
+            <div class="card">
+              <div class="section-head">
+                <div>
+                  <h2>Tabela de vendas</h2>
+                  <div class="muted">Histórico completo.</div>
+                </div>
+              </div>
+              <div class="table-wrap">
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Cliente</th>
+                      <th>Produto</th>
+                      <th>Categoria</th>
+                      <th>Qtd</th>
+                      <th>Preço</th>
+                      <th>Total</th>
+                      <th>Ações</th>
+                    </tr>
+                  </thead>
+                  <tbody id="tabelaVendas"></tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="custos" class="page">
+        <div class="card">
+          <div class="section-head">
+            <div>
+              <h2>Custos pré-definidos do evento</h2>
+              <div class="muted">Edite os valores gastos dos itens mais comuns.</div>
+            </div>
+          </div>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Item</th>
+                  <th>Valor gasto (R$)</th>
+                  <th>Ação</th>
+                </tr>
+              </thead>
+              <tbody id="tabelaCustosPadrao"></tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="grid">
+          <div class="col-5">
+            <div class="card">
+              <div class="section-head"><h2>Adicionar custo manual</h2></div>
+              <form id="formCusto">
+                <div class="field">
+                  <label for="descricaoCusto">Descrição</label>
+                  <input id="descricaoCusto" placeholder="Ex.: Transporte, taxa extra" required />
+                </div>
+                <div class="field">
+                  <label for="valorCusto">Valor (R$)</label>
+                  <input id="valorCusto" type="number" min="0" step="0.01" placeholder="0.00" required />
+                </div>
+                <div class="field full">
+                  <button class="btn btn-success" type="submit">Adicionar custo</button>
+                </div>
+              </form>
+            </div>
+          </div>
+
+          <div class="col-7">
+            <div class="card">
+              <div class="section-head">
+                <div>
+                  <h2>Tabela de custos do evento</h2>
+                  <div class="muted">Todos os gastos registrados.</div>
+                </div>
+              </div>
+              <div class="table-wrap">
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Descrição</th>
+                      <th>Valor</th>
+                      <th>Ações</th>
+                    </tr>
+                  </thead>
+                  <tbody id="tabelaCustos"></tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="config" class="page">
+        <div class="grid">
+          <div class="col-6">
+            <div class="card">
+              <div class="section-head"><h2>Logo e background</h2></div>
+              <div class="muted">Imagem padrão: <strong>img/Projete-Liberdade_capoeira.png</strong></div>
+              <div style="display:flex; gap:10px; flex-wrap:wrap; margin-top:14px;">
+                <input id="logoInput" type="file" accept="image/*" />
+                <input id="bgInput" type="file" accept="image/*" />
+                <button class="btn btn-primary" type="button" onclick="salvarLogo()">Aplicar logo</button>
+                <button class="btn btn-secondary" type="button" onclick="salvarBackground()">Aplicar background</button>
+              </div>
+              <div class="note">Se você não enviar nada, a página usa automaticamente o arquivo img/Projete-Liberdade_capoeira.png.</div>
+            </div>
+          </div>
+
+          <div class="col-6">
+            <div class="card">
+              <div class="section-head"><h2>WhatsApp da churrasqueira</h2></div>
+              <div class="field">
+                <label for="whatsNumero">Número do WhatsApp</label>
+                <input id="whatsNumero" type="text" placeholder="Ex.: 5511999998888" />
+              </div>
+              <div style="margin-top:14px;">
+                <button class="btn btn-primary" type="button" onclick="salvarNumeroWhatsApp()">Salvar número</button>
+              </div>
+              <div class="note">O botão de WhatsApp abre a conversa com o ticket pronto para enviar.</div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <div class="footer-note">Sistema de gestão do evento • Projete Capoeira Liberdade</div>
   </div>
 
-  <hr style="margin:30px 0;">
-
-  <h2>Resumo</h2>
-  <div id="resumo"></div>
-
   <script>
-    const state = {
-      vendas: [],
-      custos: []
+    const STORAGE_KEY = 'projete_capoeira_liberdade_vendas';
+    const STORAGE_LOGO = 'projete_capoeira_liberdade_logo';
+    const STORAGE_BG = 'projete_capoeira_liberdade_bg';
+    const STORAGE_WHATS = 'projete_capoeira_liberdade_whats';
+
+    let state = {
+      vendas: [
+        { id: 1, nomeCliente: 'João', produto: 'X-Burger Artesanal', categoria: 'Hambúrguer', quantidade: 2, preco: 18.00, comprovanteNome: '' },
+        { id: 2, nomeCliente: 'Maria', produto: 'Refrigerante Lata', categoria: 'Bebida', quantidade: 3, preco: 6.00, comprovanteNome: '' }
+      ],
+      custos: [
+        { id: 1001, descricao: 'Transporte', valor: 30.00 }
+      ],
+      custosPadrao: [
+        { id: 101, descricao: 'Carnes', valor: 0 },
+        { id: 102, descricao: 'Pães', valor: 0 },
+        { id: 103, descricao: 'Queijo e complementos', valor: 0 },
+        { id: 104, descricao: 'Molhos', valor: 0 },
+        { id: 105, descricao: 'Refrigerantes', valor: 0 },
+        { id: 106, descricao: 'Água', valor: 0 },
+        { id: 107, descricao: 'Gelo', valor: 0 },
+        { id: 108, descricao: 'Carvão ou gás', valor: 0 },
+        { id: 109, descricao: 'Embalagens', valor: 0 },
+        { id: 110, descricao: 'Copos e guardanapos', valor: 0 }
+      ],
+      logo: '',
+      background: '',
+      whatsNumero: ''
     };
 
-    function exportar(tipo){
-      if(tipo === 'custos'){
-        window.location.href = 'custos.html';
-        return;
+    function salvar() {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+    }
+
+    function carregar() {
+      const raw = localStorage.getItem(STORAGE_KEY);
+      if (raw) {
+        try {
+          const data = JSON.parse(raw);
+          state = { ...state, ...data };
+          if (!Array.isArray(state.custosPadrao) || !state.custosPadrao.length) {
+            state.custosPadrao = [
+              { id: 101, descricao: 'Carnes', valor: 0 },
+              { id: 102, descricao: 'Pães', valor: 0 },
+              { id: 103, descricao: 'Queijo e complementos', valor: 0 },
+              { id: 104, descricao: 'Molhos', valor: 0 },
+              { id: 105, descricao: 'Refrigerantes', valor: 0 },
+              { id: 106, descricao: 'Água', valor: 0 },
+              { id: 107, descricao: 'Gelo', valor: 0 },
+              { id: 108, descricao: 'Carvão ou gás', valor: 0 },
+              { id: 109, descricao: 'Embalagens', valor: 0 },
+              { id: 110, descricao: 'Copos e guardanapos', valor: 0 }
+            ];
+          }
+        } catch (e) {
+          console.error('Erro ao carregar dados', e);
+        }
       }
 
-      alert('Exportação funcionando: ' + tipo);
+      const logoSalva = localStorage.getItem(STORAGE_LOGO);
+      if (logoSalva) state.logo = logoSalva;
+      const bgSalvo = localStorage.getItem(STORAGE_BG);
+      if (bgSalvo) state.background = bgSalvo;
+      const whatsSalvo = localStorage.getItem(STORAGE_WHATS);
+      if (whatsSalvo) state.whatsNumero = whatsSalvo;
     }
 
-    function atualizar(){
-      document.getElementById('resumo').innerHTML = `
-        <p>Vendas: ${state.vendas.length}</p>
-        <p>Custos: ${state.custos.length}</p>
-      `;
+    function moeda(valor) {
+      return Number(valor || 0).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
     }
 
-    atualizar();
+    function novoId(lista) {
+      return lista.length ? Math.max(...lista.map(item => item.id)) + 1 : 1;
+    }
+
+    function totalFaturamento() {
+      return state.vendas.reduce((soma, item) => soma + (item.quantidade * item.preco), 0);
+    }
+
+    function totalCustos() {
+      return state.custos.reduce((soma, item) => soma + Number(item.valor || 0), 0);
+    }
+
+    function totalItensVendidos() {
+      return state.vendas.reduce((soma, item) => soma + Number(item.quantidade || 0), 0);
+    }
+
+    function ticketMedio() {
+      if (!state.vendas.length) return 0;
+      return totalFaturamento() / state.vendas.length;
+    }
+
+    function atualizarResumo() {
+      document.getElementById('faturamento').textContent = moeda(totalFaturamento());
+      document.getElementById('custos').textContent = moeda(totalCustos());
+      document.getElementById('lucro').textContent = moeda(totalFaturamento() - totalCustos());
+      document.getElementById('itensVendidos').textContent = totalItensVendidos();
+      document.getElementById('ticketMedio').textContent = moeda(ticketMedio());
+      document.getElementById('qtdVendas').textContent = state.vendas.length;
+      document.getElementById('qtdCustos').textContent = state.custos.length;
+    }
+
+    function renderDashboardVendas() {
+      const tbody = document.getElementById('dashboardVendas');
+      tbody.innerHTML = '';
+      const ultimas = [...state.vendas].slice(-5).reverse();
+      if (!ultimas.length) {
+        tbody.innerHTML = '<tr><td colspan="5" class="muted">Nenhuma venda registrada.</td></tr>';
+        return;
+      }
+      ultimas.forEach(venda => {
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td><strong>${venda.nomeCliente || '-'}</strong></td>
+          <td><strong>${venda.produto}</strong></td>
+          <td><span class="badge ${venda.categoria === 'Bebida' ? 'badge-bebida' : 'badge-hamburguer'}">${venda.categoria}</span></td>
+          <td>${venda.quantidade}</td>
+          <td><strong>${moeda(venda.quantidade * venda.preco)}</strong></td>
+        `;
+        tbody.appendChild(tr);
+      });
+    }
+
+    function renderVendas() {
+      const tbody = document.getElementById('tabelaVendas');
+      tbody.innerHTML = '';
+      if (!state.vendas.length) {
+        tbody.innerHTML = '<tr><td colspan="7" class="muted">Nenhuma venda registrada.</td></tr>';
+        return;
+      }
+      state.vendas.forEach(venda => {
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td><strong>${venda.nomeCliente || '-'}</strong></td>
+          <td><strong>${venda.produto}</strong></td>
+          <td><span class="badge ${venda.categoria === 'Bebida' ? 'badge-bebida' : 'badge-hamburguer'}">${venda.categoria}</span></td>
+          <td>${venda.quantidade}</td>
+          <td>${moeda(venda.preco)}</td>
+          <td><strong>${moeda(venda.quantidade * venda.preco)}</strong></td>
+          <td>
+            <div style="display:flex; gap:8px; flex-wrap:wrap;">
+              <button class="btn btn-success btn-small" type="button" onclick="enviarWhatsApp(${venda.id})">WhatsApp</button>
+              <button class="btn btn-danger btn-small" type="button" onclick="removerVenda(${venda.id})">Excluir</button>
+            </div>
+          </td>
+        `;
+        tbody.appendChild(tr);
+      });
+    }
+
+    function renderCustosPadrao() {
+      const tbody = document.getElementById('tabelaCustosPadrao');
+      tbody.innerHTML = '';
+      state.custosPadrao.forEach(item => {
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td><strong>${item.descricao}</strong></td>
+          <td><input type="number" min="0" step="0.01" value="${item.valor || 0}" id="custoPadrao_${item.id}" style="max-width:180px;" /></td>
+          <td><button class="btn btn-success btn-small" type="button" onclick="salvarCustoPadrao(${item.id})">Salvar valor</button></td>
+        `;
+        tbody.appendChild(tr);
+      });
+    }
+
+    function renderCustos() {
+      const tbody = document.getElementById('tabelaCustos');
+      tbody.innerHTML = '';
+      if (!state.custos.length) {
+        tbody.innerHTML = '<tr><td colspan="3" class="muted">Nenhum custo registrado.</td></tr>';
+        return;
+      }
+      state.custos.forEach(custo => {
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td><strong>${custo.descricao}</strong></td>
+          <td>${moeda(custo.valor)}</td>
+          <td><button class="btn btn-danger btn-small" type="button" onclick="removerCusto(${custo.id})">Excluir</button></td>
+        `;
+        tbody.appendChild(tr);
+      });
+    }
+
+    function aplicarLogo() {
+      document.getElementById('logoPreview').src = state.logo || 'img/Projete-Liberdade_capoeira.png';
+    }
+
+    function aplicarBackground() {
+      document.body.style.setProperty('--bg-image', `url('${state.background || 'img/Projete-Liberdade_capoeira.png'}')`);
+    }
+
+    function atualizarTela() {
+      atualizarResumo();
+      renderDashboardVendas();
+      renderVendas();
+      renderCustosPadrao();
+      renderCustos();
+      aplicarLogo();
+      aplicarBackground();
+      document.getElementById('whatsNumero').value = state.whatsNumero || '';
+      salvar();
+    }
+
+    function abrirPagina(nome) {
+      document.querySelectorAll('.page').forEach(page => page.classList.remove('active'));
+      document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+      document.getElementById(nome).classList.add('active');
+      document.querySelector(`.tab-btn[data-page="${nome}"]`).classList.add('active');
+    }
+
+    document.getElementById('formVenda').addEventListener('submit', function(e) {
+      e.preventDefault();
+      const nomeCliente = document.getElementById('nomeCliente').value.trim();
+      const produto = document.getElementById('produto').value.trim();
+      const categoria = document.getElementById('categoria').value;
+      const quantidade = Number(document.getElementById('quantidade').value);
+      const preco = Number(document.getElementById('preco').value);
+      if (!nomeCliente || !produto || quantidade <= 0 || preco < 0) return;
+      state.vendas.push({ id: novoId(state.vendas), nomeCliente, produto, categoria, quantidade, preco, comprovanteNome: '' });
+      this.reset();
+      document.getElementById('quantidade').value = 1;
+      document.getElementById('categoria').value = 'Hambúrguer';
+      atualizarTela();
+    });
+
+    document.getElementById('formCusto').addEventListener('submit', function(e) {
+      e.preventDefault();
+      const descricao = document.getElementById('descricaoCusto').value.trim();
+      const valor = Number(document.getElementById('valorCusto').value);
+      if (!descricao || valor < 0) return;
+      state.custos.push({ id: novoId(state.custos), descricao, valor });
+      this.reset();
+      atualizarTela();
+    });
+
+    function salvarCustoPadrao(id) {
+      const input = document.getElementById(`custoPadrao_${id}`);
+      const valor = Number(input.value || 0);
+      state.custosPadrao = state.custosPadrao.map(item => item.id === id ? { ...item, valor } : item);
+      const item = state.custosPadrao.find(item => item.id === id);
+      const index = state.custos.findIndex(c => c.id === id);
+      if (index >= 0) {
+        state.custos[index] = { id, descricao: item.descricao, valor };
+      } else {
+        state.custos.push({ id, descricao: item.descricao, valor });
+      }
+      atualizarTela();
+    }
+
+    function removerVenda(id) {
+      state.vendas = state.vendas.filter(item => item.id !== id);
+      atualizarTela();
+    }
+
+    function removerCusto(id) {
+      state.custos = state.custos.filter(item => item.id !== id);
+      atualizarTela();
+    }
+
+    function salvarNumeroWhatsApp() {
+      state.whatsNumero = (document.getElementById('whatsNumero').value || '').replace(/[^0-9]/g, '');
+      localStorage.setItem(STORAGE_WHATS, state.whatsNumero);
+      salvar();
+      alert('Número salvo com sucesso.');
+    }
+
+    function enviarWhatsApp(id) {
+      const venda = state.vendas.find(item => item.id === id);
+      if (!venda) return;
+      if (!state.whatsNumero) {
+        alert('Cadastre primeiro o número do WhatsApp na aba Configurações.');
+        abrirPagina('config');
+        return;
+      }
+      const mensagem = [
+        'TICKET DE PEDIDO - PROJETE CAPOEIRA LIBERDADE',
+        'Cliente: ' + venda.nomeCliente,
+        'Produto: ' + venda.produto,
+        'Categoria: ' + venda.categoria,
+        'Quantidade: ' + venda.quantidade,
+        'Valor unitário: ' + moeda(venda.preco),
+        'Total: ' + moeda(venda.quantidade * venda.preco),
+        'Liberar preparo do hambúrguer na churrasqueira.'
+      ].join('\n');
+      window.open(`https://wa.me/${state.whatsNumero}?text=${encodeURIComponent(mensagem)}`, '_blank');
+    }
+
+    function toggleExportMenu(event) {
+      event.stopPropagation();
+      document.getElementById('exportMenu').classList.toggle('open');
+    }
+
+    document.addEventListener('click', function(e) {
+      const menu = document.getElementById('exportMenu');
+      const btn = e.target.closest('[onclick*="toggleExportMenu"]');
+      const inside = e.target.closest('#exportMenu');
+      if (!btn && !inside) menu.classList.remove('open');
+    });
+
+    function gerarWorkbookXML(nomeAba, colunas, linhas) {
+      const escapeXml = (valor) => String(valor ?? '')
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&apos;');
+
+      const linhasXml = [];
+      linhasXml.push('<Row>' + colunas.map(col => '<Cell><Data ss:Type="String">' + escapeXml(col) + '</Data></Cell>').join('') + '</Row>');
+      linhas.forEach(linha => {
+        linhasXml.push('<Row>' + linha.map(valor => {
+          const numero = typeof valor === 'number' && Number.isFinite(valor);
+          return '<Cell><Data ss:Type="' + (numero ? 'Number' : 'String') + '">' + escapeXml(valor) + '</Data></Cell>';
+        }).join('') + '</Row>');
+      });
+
+      return '<?xml version="1.0"?>' +
+        '<?mso-application progid="Excel.Sheet"?>' +
+        '<Workbook xmlns="urn:schemas-microsoft-com:office:spreadsheet" xmlns:ss="urn:schemas-microsoft-com:office:spreadsheet">' +
+        '<Worksheet ss:Name="' + escapeXml(nomeAba) + '"><Table>' + linhasXml.join('') + '</Table></Worksheet></Workbook>';
+    }
+
+    function gerarWorkbookXMLCompleto() {
+      const escapeXml = (valor) => String(valor ?? '')
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&apos;');
+
+      const montarSheet = (nome, colunas, linhas) => {
+        const header = '<Row>' + colunas.map(col => '<Cell><Data ss:Type="String">' + escapeXml(col) + '</Data></Cell>').join('') + '</Row>';
+        const body = linhas.map(linha => '<Row>' + linha.map(valor => {
+          const numero = typeof valor === 'number' && Number.isFinite(valor);
+          return '<Cell><Data ss:Type="' + (numero ? 'Number' : 'String') + '">' + escapeXml(valor) + '</Data></Cell>';
+        }).join('') + '</Row>').join('');
+        return '<Worksheet ss:Name="' + escapeXml(nome) + '"><Table>' + header + body + '</Table></Worksheet>';
+      };
+
+      const resumo = [
+        ['Faturamento total', totalFaturamento()],
+        ['Custos do evento', totalCustos()],
+        ['Lucro estimado', totalFaturamento() - totalCustos()],
+        ['Itens vendidos', totalItensVendidos()],
+        ['Quantidade de vendas', state.vendas.length],
+        ['Quantidade de custos', state.custos.length]
+      ];
+
+      const vendas = state.vendas.map(venda => [
+        venda.nomeCliente || '',
+        venda.produto || '',
+        venda.categoria || '',
+        venda.quantidade || 0,
+        venda.preco || 0,
+        (venda.quantidade || 0) * (venda.preco || 0)
+      ]);
+
+      const custos = state.custos.map(custo => [custo.descricao || '', custo.valor || 0]);
+
+      return '<?xml version="1.0"?>' +
+        '<?mso-application progid="Excel.Sheet"?>' +
+        '<Workbook xmlns="urn:schemas-microsoft-com:office:spreadsheet" xmlns:ss="urn:schemas-microsoft-com:office:spreadsheet">' +
+        montarSheet('Resumo', ['Indicador', 'Valor'], resumo) +
+        montarSheet('Vendas', ['Cliente', 'Produto', 'Categoria', 'Quantidade', 'Preco Unitario', 'Total'], vendas) +
+        montarSheet('Custos', ['Descricao', 'Valor'], custos) +
+        '</Workbook>';
+    }
+
+    function baixarArquivo(conteudo, nomeArquivo) {
+      const blob = new Blob([conteudo], { type: 'application/vnd.ms-excel;charset=utf-8;' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = nomeArquivo;
+      a.click();
+      URL.revokeObjectURL(url);
+    }
+
+    function exportarPlanilha(tipo) {
+      let conteudo = '';
+      let nomeArquivo = '';
+
+      if (tipo === 'vendas') {
+        conteudo = gerarWorkbookXML('Vendas', ['Cliente', 'Produto', 'Categoria', 'Quantidade', 'Preco Unitario', 'Total'], state.vendas.map(v => [v.nomeCliente, v.produto, v.categoria, v.quantidade, v.preco, v.quantidade * v.preco]));
+        nomeArquivo = 'projete_capoeira_liberdade_vendas.xls';
+      } else if (tipo === 'custos') {
+        conteudo = gerarWorkbookXML('Custos', ['Descricao', 'Valor'], state.custos.map(c => [c.descricao, c.valor]));
+        nomeArquivo = 'projete_capoeira_liberdade_custos.xls';
+      } else {
+        conteudo = gerarWorkbookXMLCompleto();
+        nomeArquivo = 'projete_capoeira_liberdade_vendas_custos.xls';
+      }
+
+      baixarArquivo(conteudo, nomeArquivo);
+      document.getElementById('exportMenu').classList.remove('open');
+    }
+
+    function salvarLogo() {
+      const file = document.getElementById('logoInput').files[0];
+      if (!file) return alert('Selecione uma imagem de logo.');
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        state.logo = e.target.result;
+        localStorage.setItem(STORAGE_LOGO, state.logo);
+        atualizarTela();
+      };
+      reader.readAsDataURL(file);
+    }
+
+    function salvarBackground() {
+      const file = document.getElementById('bgInput').files[0];
+      if (!file) return alert('Selecione uma imagem de background.');
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        state.background = e.target.result;
+        localStorage.setItem(STORAGE_BG, state.background);
+        atualizarTela();
+      };
+      reader.readAsDataURL(file);
+    }
+
+    carregar();
+    atualizarTela();
   </script>
-
 </body>
 </html>
