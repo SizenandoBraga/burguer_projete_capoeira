@@ -57,52 +57,52 @@
 
           <button class="inline-flex min-h-12 items-center justify-center rounded-xl border border-white/15 bg-white/10 px-4 py-3 text-sm font-bold text-white transition hover:-translate-y-0.5" type="button" onclick="document.getElementById('logoInput').click()">Trocar logo</button>
           <a href="custos.html" class="inline-flex min-h-12 items-center justify-center rounded-xl border border-white/15 bg-white/10 px-4 py-3 text-sm font-bold text-white transition hover:-translate-y-0.5">Abrir página de custos</a>
-          <a href="index.html" class="inline-flex items-center justify-center rounded-xl bg-gradient-to-r from-brand-orange to-brand-orangeDark px-4 py-3 text-sm font-bold text-white shadow-lg shadow-orange-500/20 transition hover:-translate-y-0.5">Voltar ao dashboard</a>
+          <a href="index.html" class="inline-flex min-h-12 items-center justify-center rounded-xl bg-gradient-to-r from-brand-orange to-brand-orangeDark px-4 py-3 text-sm font-bold text-white shadow-lg shadow-orange-500/20 transition hover:-translate-y-0.5">Voltar ao dashboard</a>
         </div>
       </div>
 
-      <div class="mt-5 flex flex-wrap gap-3">
-        <a href="index.html" class="inline-flex items-center justify-center rounded-full border border-white/15 bg-white/10 px-4 py-2 text-sm font-bold text-white transition hover:bg-white/15">Dashboard</a>
-        <span class="inline-flex items-center justify-center rounded-full bg-white px-4 py-2 text-sm font-bold text-brand-ink">Vendas</span>
-        <a href="custos.html" class="inline-flex items-center justify-center rounded-full border border-white/15 bg-white/10 px-4 py-2 text-sm font-bold text-white transition hover:bg-white/15">Custos</a>
-        <a href="configuracoes.html" class="inline-flex items-center justify-center rounded-full border border-white/15 bg-white/10 px-4 py-2 text-sm font-bold text-white transition hover:bg-white/15">Configurações</a>
+      <div class="mt-4 grid grid-cols-2 gap-2 sm:mt-5 sm:flex sm:flex-wrap sm:gap-3">
+        <a href="index.html" class="inline-flex min-h-11 items-center justify-center rounded-full border border-white/15 bg-white/10 px-4 py-2 text-sm font-bold text-white transition hover:bg-white/15">Dashboard</a>
+        <span class="inline-flex min-h-11 items-center justify-center rounded-full bg-white px-4 py-2 text-sm font-bold text-brand-ink">Vendas</span>
+        <a href="custos.html" class="inline-flex min-h-11 items-center justify-center rounded-full border border-white/15 bg-white/10 px-4 py-2 text-sm font-bold text-white transition hover:bg-white/15">Custos</a>
+        <a href="configuracoes.html" class="inline-flex min-h-11 items-center justify-center rounded-full border border-white/15 bg-white/10 px-4 py-2 text-sm font-bold text-white transition hover:bg-white/15">Configurações</a>
       </div>
     </header>
 
-    <main class="grid gap-5 xl:grid-cols-12">
-      <section class="xl:col-span-5 rounded-[26px] border border-white/40 bg-white/95 p-5 text-brand-ink shadow-softxl">
-        <div class="mb-4 flex flex-wrap items-center justify-between gap-3">
-          <h2 class="text-2xl font-bold">Registrar venda</h2>
-          <button class="rounded-xl border border-slate-200 bg-slate-100 px-3 py-2 text-xs font-bold text-slate-700" type="button" onclick="adicionarProdutoRapido()">+ Adicionar produto rápido</button>
+    <main class="grid gap-4 lg:gap-5 xl:grid-cols-12">
+      <section class="xl:col-span-5 rounded-[22px] border border-white/40 bg-white/95 p-4 text-brand-ink shadow-softxl sm:rounded-[26px] sm:p-5">
+        <div class="mb-4 flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-center sm:justify-between">
+          <h2 class="text-xl font-bold sm:text-2xl">Registrar venda</h2>
+          <button class="min-h-11 rounded-xl border border-slate-200 bg-slate-100 px-3 py-2 text-sm font-bold text-slate-700" type="button" onclick="adicionarProdutoRapido()">+ Adicionar produto rápido</button>
         </div>
 
         <form id="formVenda" class="grid gap-4 md:grid-cols-2">
           <div>
             <label for="nomeCliente" class="mb-2 block text-sm font-bold text-slate-800">Nome da pessoa</label>
-            <input id="nomeCliente" class="w-full rounded-2xl border border-slate-300 bg-white px-4 py-3 text-slate-900 outline-none" placeholder="Ex.: João, Maria, Mestre Paulo" required />
+            <input id="nomeCliente" class="min-h-12 w-full rounded-2xl border border-slate-300 bg-white px-4 py-3 text-base text-slate-900 outline-none" placeholder="Ex.: João, Maria, Mestre Paulo" required />
           </div>
           <div>
             <label for="produto" class="mb-2 block text-sm font-bold text-slate-800">Produto</label>
-            <input id="produto" class="w-full rounded-2xl border border-slate-300 bg-white px-4 py-3 text-slate-900 outline-none" placeholder="Ex.: X-Burger Artesanal" required />
+            <input id="produto" class="min-h-12 w-full rounded-2xl border border-slate-300 bg-white px-4 py-3 text-base text-slate-900 outline-none" placeholder="Ex.: X-Burger Artesanal" required />
           </div>
           <div>
             <label for="categoria" class="mb-2 block text-sm font-bold text-slate-800">Categoria</label>
-            <select id="categoria" class="w-full rounded-2xl border border-slate-300 bg-white px-4 py-3 text-slate-900 outline-none">
+            <select id="categoria" class="min-h-12 w-full rounded-2xl border border-slate-300 bg-white px-4 py-3 text-base text-slate-900 outline-none">
               <option value="Hambúrguer">Hambúrguer</option>
               <option value="Bebida">Bebida</option>
             </select>
           </div>
           <div>
             <label for="quantidade" class="mb-2 block text-sm font-bold text-slate-800">Quantidade</label>
-            <input id="quantidade" type="number" min="1" value="1" class="w-full rounded-2xl border border-slate-300 bg-white px-4 py-3 text-slate-900 outline-none" required />
+            <input id="quantidade" type="number" min="1" value="1" class="min-h-12 w-full rounded-2xl border border-slate-300 bg-white px-4 py-3 text-base text-slate-900 outline-none" required />
           </div>
           <div class="md:col-span-2">
             <label for="preco" class="mb-2 block text-sm font-bold text-slate-800">Preço unitário (R$)</label>
-            <input id="preco" type="number" min="0" step="0.01" placeholder="0.00" class="w-full rounded-2xl border border-slate-300 bg-white px-4 py-3 text-slate-900 outline-none" required />
+            <input id="preco" type="number" min="0" step="0.01" placeholder="0.00" class="min-h-12 w-full rounded-2xl border border-slate-300 bg-white px-4 py-3 text-base text-slate-900 outline-none" required />
           </div>
-          <div class="md:col-span-2 flex flex-wrap gap-3">
-            <button class="inline-flex items-center justify-center rounded-2xl border border-slate-200 bg-slate-100 px-4 py-3 text-sm font-bold text-slate-700" type="button" onclick="adicionarItemCarrinho()">+ Adicionar mais um item</button>
-            <button class="inline-flex flex-1 items-center justify-center rounded-2xl bg-gradient-to-r from-brand-orange to-brand-orangeDark px-4 py-3 text-sm font-bold text-white" type="submit">Fechar venda</button>
+          <div class="md:col-span-2 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
+            <button class="inline-flex min-h-12 items-center justify-center rounded-2xl border border-slate-200 bg-slate-100 px-4 py-3 text-sm font-bold text-slate-700" type="button" onclick="adicionarItemCarrinho()">+ Adicionar mais um item</button>
+            <button class="inline-flex min-h-12 flex-1 items-center justify-center rounded-2xl bg-gradient-to-r from-brand-orange to-brand-orangeDark px-4 py-3 text-base font-bold text-white" type="submit">Fechar venda</button>
           </div>
           <div class="md:col-span-2">
             <div id="carrinhoPreview" class="rounded-[18px] border border-dashed border-slate-300 bg-white p-4 font-mono text-sm leading-6 whitespace-pre-line text-slate-900">Nenhum item no pedido.</div>
@@ -110,15 +110,15 @@
         </form>
       </section>
 
-      <section class="xl:col-span-7 rounded-[26px] border border-white/40 bg-white/95 p-5 text-brand-ink shadow-softxl">
+      <section class="xl:col-span-7 rounded-[22px] border border-white/40 bg-white/95 p-4 text-brand-ink shadow-softxl sm:rounded-[26px] sm:p-5">
         <div class="mb-4 flex flex-wrap items-center justify-between gap-3">
           <div>
-            <h2 class="text-2xl font-bold">Tabela de vendas</h2>
+            <h2 class="text-xl font-bold sm:text-2xl">Tabela de vendas</h2>
             <p class="text-sm text-slate-500">Histórico completo.</p>
           </div>
         </div>
 
-        <div class="overflow-x-auto rounded-2xl border border-slate-200 bg-white">
+        <div class="hidden overflow-x-auto rounded-2xl border border-slate-200 bg-white lg:block">
           <table class="min-w-[1100px] w-full border-collapse">
             <thead>
               <tr class="bg-slate-50 text-left text-xs font-extrabold uppercase tracking-wider text-slate-600">
@@ -140,22 +140,36 @@
             </tbody>
           </table>
         </div>
+
+        <div id="listaVendasMobile" class="grid gap-3 lg:hidden">
+          <div class="rounded-2xl border border-slate-200 bg-white p-4 text-sm text-slate-500">Nenhuma venda registrada.</div>
+        </div>
       </section>
 
-      <section class="xl:col-span-12 rounded-[26px] border border-white/40 bg-white/95 p-5 text-brand-ink shadow-softxl">
+      <section class="xl:col-span-12 rounded-[22px] border border-white/40 bg-white/95 p-4 text-brand-ink shadow-softxl sm:rounded-[26px] sm:p-5">
         <div class="mb-4 flex flex-wrap items-center justify-between gap-3">
           <div>
-            <h2 class="text-2xl font-bold">Último ticket</h2>
+            <h2 class="text-xl font-bold sm:text-2xl">Último ticket</h2>
             <p class="text-sm text-slate-500">Prévia do ticket profissional do último pedido.</p>
           </div>
         </div>
-        <div id="ticketPreview" class="rounded-[18px] border border-dashed border-slate-300 bg-white p-4 font-mono text-sm leading-6 whitespace-pre-line text-slate-900">TICKET PROFISSIONAL
+        <div id="ticketPreview" class="rounded-[18px] border border-dashed border-slate-300 bg-white p-4 font-mono text-xs leading-5 whitespace-pre-line text-slate-900 sm:text-sm sm:leading-6">TICKET PROFISSIONAL
 
 A próxima venda aparecerá aqui com número do pedido e horário.</div>
       </section>
     </main>
 
-    <div class="py-2 text-center text-sm text-white/75">Sistema de gestão do evento • Projete Capoeira Liberdade</div>
+    <div class="py-3 text-center text-xs text-white/75 sm:text-sm">Sistema de gestão do evento • Projete Capoeira Liberdade</div>
+
+    <div class="sticky bottom-3 z-40 mt-4 lg:hidden">
+      <div class="rounded-2xl border border-white/15 bg-slate-900/90 p-2 shadow-softxl backdrop-blur-md">
+        <div class="grid grid-cols-3 gap-2 text-center text-xs font-bold">
+          <a href="index.html" class="rounded-xl border border-white/10 bg-white/5 px-2 py-3 text-white">Dashboard</a>
+          <a href="custos.html" class="rounded-xl border border-white/10 bg-white/5 px-2 py-3 text-white">Custos</a>
+          <a href="#formVenda" class="rounded-xl bg-gradient-to-r from-brand-orange to-brand-orangeDark px-2 py-3 text-white">Nova venda</a>
+        </div>
+      </div>
+    </div>
   </div>
 
   <input id="logoInput" type="file" accept="image/*" class="hidden" />
@@ -302,13 +316,16 @@ A próxima venda aparecerá aqui com número do pedido e horário.</div>
 
     function renderVendas() {
       const tbody = document.getElementById('tabelaVendas');
+      const listaMobile = document.getElementById('listaVendasMobile');
       tbody.innerHTML = '';
+      if (listaMobile) listaMobile.innerHTML = '';
       if (!state.vendas.length) {
         tbody.innerHTML = '<tr><td colspan="9" class="px-4 py-6 text-sm text-slate-500">Nenhuma venda registrada.</td></tr>';
+        if (listaMobile) listaMobile.innerHTML = '<div class="rounded-2xl border border-slate-200 bg-white p-4 text-sm text-slate-500">Nenhuma venda registrada.</div>';
         return;
       }
 
-      state.vendas.forEach(venda => {
+      state.vendas.slice().reverse().forEach(venda => {
         const itens = Array.isArray(venda.itens) && venda.itens.length
           ? venda.itens
           : [{ produto: venda.produto, categoria: venda.categoria, quantidade: venda.quantidade, preco: venda.preco }];
@@ -337,6 +354,31 @@ A próxima venda aparecerá aqui com número do pedido e horário.</div>
           </td>
         `;
         tbody.appendChild(tr);
+
+        if (listaMobile) {
+          const card = document.createElement('div');
+          card.className = 'rounded-2xl border border-slate-200 bg-white p-4 shadow-sm';
+          card.innerHTML = `
+            <div class="mb-3 flex items-start justify-between gap-3">
+              <div>
+                <div class="text-sm font-extrabold text-slate-900">Pedido #${venda.ordem || '-'}</div>
+                <div class="text-xs text-slate-500">${venda.horario || '-'} • ${venda.nomeCliente || '-'}</div>
+              </div>
+              <div class="rounded-full bg-blue-50 px-3 py-1 text-[11px] font-bold text-blue-700">${quantidadeTotal} itens</div>
+            </div>
+            <div class="mb-2 text-sm font-semibold text-slate-900">${descricaoProdutos}</div>
+            <div class="mb-3 grid grid-cols-2 gap-2 text-xs text-slate-500">
+              <div>Preço médio<br><span class="text-sm font-bold text-slate-900">${moeda(precoMedio)}</span></div>
+              <div>Total<br><span class="text-sm font-bold text-slate-900">${moeda(totalVenda)}</span></div>
+            </div>
+            <div class="grid grid-cols-3 gap-2">
+              <button class="rounded-xl border border-slate-200 bg-slate-100 px-2 py-3 text-[11px] font-bold text-slate-700" type="button" onclick="copiarTicket(${venda.id})">Copiar</button>
+              <button class="rounded-xl bg-brand-green px-2 py-3 text-[11px] font-bold text-white" type="button" onclick="enviarWhatsApp(${venda.id})">WhatsApp</button>
+              <button class="rounded-xl bg-brand-red px-2 py-3 text-[11px] font-bold text-white" type="button" onclick="removerVenda(${venda.id})">Excluir</button>
+            </div>
+          `;
+          listaMobile.appendChild(card);
+        }
       });
     }
 
